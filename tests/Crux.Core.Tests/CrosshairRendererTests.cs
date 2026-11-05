@@ -98,6 +98,87 @@ public class CrosshairRendererTests
         Assert.Equal([c - 6, c - 5, c - 4, c + 3, c + 4, c + 5], filledColumns);
     }
 
+    public static TheoryData<int, int, bool> DotAndLineCombinations()
+    {
+        var data = new TheoryData<int, int, bool>();
+        for (var thickness = 1; thickness <= 4; thickness++)
+        {
+            for (var dotSize = 1; dotSize <= 4; dotSize++)
+            {
+                data.Add(thickness, dotSize, false);
+                data.Add(thickness, dotSize, true);
+            }
+        }
+
+        return data;
+    }
+
+    [Theory]
+    [MemberData(nameof(DotAndLineCombinations))]
+    public void Render_DotWithLines_IsConcentricForAnyParity(int thickness, int dotSize, bool roundDot)
+    {
+        var image = CrosshairRenderer.Render(new CrosshairSettings
+        {
+            LineThickness = thickness,
+            Gap = 3,
+            LineLength = 4,
+            ShowOutline = true,
+            OutlineThickness = 1,
+            ShowDot = true,
+            RoundDot = roundDot,
+            DotSize = dotSize,
+            ShowRing = true,
+            RingRadius = 9,
+            RingThickness = 1,
+        });
+
+        AssertSymmetricAroundAnchor(image, evenAnchor: thickness % 2 == 0);
+    }
+
+    [Fact]
+    public void Render_OddDotWithEvenLines_GrowsToFillTheCrossing()
+    {
+        var image = CrosshairRenderer.Render(new CrosshairSettings
+        {
+            LineThickness = 2,
+            Gap = 2,
+            LineLength = 3,
+            ShowOutline = false,
+            ShowDot = true,
+            DotSize = 1,
+        });
+        var c = image.Center;
+
+        Assert.All(Alphas(image), alpha => Assert.True(alpha is 0 or 255));
+        foreach (var (x, y) in new[] { (c - 1, c - 1), (c, c - 1), (c - 1, c), (c, c) })
+        {
+            Assert.Equal(255, image.GetPixel(x, y).A);
+        }
+
+        foreach (var (x, y) in new[] { (c - 2, c - 2), (c + 1, c + 1), (c - 2, c), (c + 1, c) })
+        {
+            Assert.Equal(0, image.GetPixel(x, y).A);
+        }
+    }
+
+    [Fact]
+    public void Render_EvenThicknessWithOutlineAndShadow_IsSymmetricAroundPixelCorner()
+    {
+        var image = CrosshairRenderer.Render(new CrosshairSettings
+        {
+            LineThickness = 2,
+            Gap = 3,
+            LineLength = 3,
+            ShowOutline = true,
+            OutlineThickness = 1,
+            ShowShadow = true,
+            ShadowSize = 8,
+            ShadowOpacity = 100,
+        });
+
+        AssertSymmetricAroundAnchor(image, evenAnchor: true);
+    }
+
     [Fact]
     public void Render_DrawsOutlineAroundLines()
     {
@@ -343,4 +424,27 @@ public class CrosshairRendererTests
 
     private static IEnumerable<byte> Alphas(CrosshairImage image) =>
         Enumerable.Range(0, image.Size * image.Size).Select(i => image.Pixels[i * 4 + 3]);
+
+    private static void AssertSymmetricAroundAnchor(CrosshairImage image, bool evenAnchor)
+    {
+        var mirrorSum = evenAnchor ? image.Center * 2 - 1 : image.Size - 1;
+        for (var y = 0; y < image.Size; y++)
+        {
+            for (var x = 0; x < image.Size; x++)
+            {
+                var pixel = image.GetPixel(x, y);
+                var mirroredX = mirrorSum - x;
+                var mirroredY = mirrorSum - y;
+                if (mirroredX < 0 || mirroredY < 0)
+                {
+                    Assert.Equal(0, pixel.A);
+                    continue;
+                }
+
+                Assert.Equal(pixel, image.GetPixel(mirroredX, y));
+                Assert.Equal(pixel, image.GetPixel(x, mirroredY));
+                Assert.Equal(pixel, image.GetPixel(y, x));
+            }
+        }
+    }
 }

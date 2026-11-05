@@ -19,8 +19,11 @@ internal static class ShapeGeometry
             _ => TShape(width, height, thickness),
         };
 
-        var centerX = width % 2 == 1 ? 0.5 : 0;
-        var centerY = height % 2 == 1 ? 0.5 : 0;
+        var quarterTurned = (layer.Rotation % 180 + 180) % 180 == 90;
+        var extentX = quarterTurned ? height : width;
+        var extentY = quarterTurned ? width : height;
+        var centerX = extentX % 2 == 1 ? 0.5 : 0;
+        var centerY = extentY % 2 == 1 ? 0.5 : 0;
         var radians = layer.Rotation * Math.PI / 180;
         var cos = Math.Cos(radians);
         var sin = Math.Sin(radians);

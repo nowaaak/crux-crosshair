@@ -64,8 +64,10 @@ public static class CrosshairRenderer
         var center = (low + high) / 2.0;
         var gap = s.Gap;
         var length = s.LineLength;
+        var multiArm = s.ArmCount != CrosshairSettings.DefaultArmCount;
+        var linesVisible = length > 0 && (multiArm || s.ShowTop || s.ShowBottom || s.ShowLeft || s.ShowRight);
 
-        if (length > 0 && s.ArmCount != CrosshairSettings.DefaultArmCount)
+        if (length > 0 && multiArm)
         {
             for (var arm = 0; arm < s.ArmCount; arm++)
             {
@@ -96,20 +98,26 @@ public static class CrosshairRenderer
             }
         }
 
+        var anchor = center;
         if (s.ShowDot)
         {
-            var dotLow = -(s.DotSize / 2);
-            var dotHigh = dotLow + s.DotSize;
-            var dotCenter = (dotLow + dotHigh) / 2.0;
+            var dotSize = linesVisible && s.DotSize % 2 != s.LineThickness % 2 ? s.DotSize + 1 : s.DotSize;
+            var dotLow = -(dotSize / 2);
+            var dotHigh = dotLow + dotSize;
+            if (!linesVisible)
+            {
+                anchor = (dotLow + dotHigh) / 2.0;
+            }
+
             shapes.Add(s.RoundDot
-                ? new RingShape(dotCenter, 0, s.DotSize / 2.0 + grow)
-                : new RectShape(dotLow - grow, dotLow - grow, dotHigh + grow, dotHigh + grow, s.Rotation, dotCenter));
+                ? new RingShape(anchor, 0, dotSize / 2.0 + grow)
+                : new RectShape(dotLow - grow, dotLow - grow, dotHigh + grow, dotHigh + grow, s.Rotation, anchor));
         }
 
         if (s.ShowRing)
         {
             var halfThickness = s.RingThickness / 2.0;
-            shapes.Add(new RingShape(center, s.RingRadius - halfThickness - grow, s.RingRadius + halfThickness + grow));
+            shapes.Add(new RingShape(anchor, s.RingRadius - halfThickness - grow, s.RingRadius + halfThickness + grow));
         }
 
         return shapes;

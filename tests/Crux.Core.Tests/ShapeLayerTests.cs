@@ -13,6 +13,23 @@ public class ShapeLayerTests
         Assert.All(Alphas(image), alpha => Assert.True(alpha is 0 or 255));
     }
 
+    [Theory]
+    [InlineData(90)]
+    [InlineData(270)]
+    public void QuarterTurnedRectangle_WithMixedParity_StaysPixelSharp(int rotation)
+    {
+        var image = Render(new ShapeLayer { Kind = ShapeKind.Rectangle, Width = 4, Height = 3, Rotation = rotation, Style = Plain });
+        var opaque = Enumerable.Range(0, image.Size * image.Size)
+            .Where(i => image.Pixels[i * 4 + 3] == 255)
+            .Select(i => (X: i % image.Size, Y: i / image.Size))
+            .ToList();
+
+        Assert.All(Alphas(image), alpha => Assert.True(alpha is 0 or 255));
+        Assert.Equal(12, opaque.Count);
+        Assert.Equal(3, opaque.Max(p => p.X) - opaque.Min(p => p.X) + 1);
+        Assert.Equal(4, opaque.Max(p => p.Y) - opaque.Min(p => p.Y) + 1);
+    }
+
     [Fact]
     public void RectangleFrame_LeavesTheInsideEmpty()
     {
