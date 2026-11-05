@@ -145,7 +145,7 @@
 
         <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource WindowBrush}" BorderBrush="{DynamicResource CardBorderBrush}"
                 BorderThickness="1,1,0,0" CornerRadius="18,0,0,0">
-            <Grid Margin="28,24,28,0" MaxWidth="1200">
+            <Grid>
                 <views:CrosshairPage Visibility="{Binding CurrentPage, Converter={StaticResource EnumVisibility}, ConverterParameter=Crosshair}" />
                 <views:PresetsPage Visibility="{Binding CurrentPage, Converter={StaticResource EnumVisibility}, ConverterParameter=Presets}" />
                 <views:OverlayPage Visibility="{Binding CurrentPage, Converter={StaticResource EnumVisibility}, ConverterParameter=Overlay}" />

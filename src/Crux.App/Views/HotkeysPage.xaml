@@ -3,41 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Crux.App.Controls"
              xmlns:l="clr-namespace:Crux.App.Localization">
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Top">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Style="{StaticResource PageColumn}">
             <TextBlock Text="{l:T NavHotkeys}" Style="{StaticResource PageTitle}" />
             <TextBlock Text="{l:T HotkeysSubtitle}" Style="{StaticResource PageSubtitle}" />
+            <controls:SettingCard Icon="{StaticResource Icon.Eye}" Header="{l:T HotkeyToggleHeader}" Description="{l:T HotkeyToggleDescription}">
+                <controls:HotkeyBox Label="{l:T HotkeyToggleHeader}" Hotkey="{Binding ToggleHotkey}"
+                                    Status="{Binding ToggleHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
+            </controls:SettingCard>
+            <controls:SettingCard Icon="{StaticResource Icon.SkipForward}" Header="{l:T HotkeyNextHeader}" Description="{l:T HotkeyNextDescription}">
+                <controls:HotkeyBox Label="{l:T HotkeyNextHeader}" Hotkey="{Binding NextPresetHotkey}"
+                                    Status="{Binding NextHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
+            </controls:SettingCard>
+            <controls:SettingCard Icon="{StaticResource Icon.SkipBack}" Header="{l:T HotkeyPreviousHeader}" Description="{l:T HotkeyPreviousDescription}">
+                <controls:HotkeyBox Label="{l:T HotkeyPreviousHeader}" Hotkey="{Binding PreviousPresetHotkey}"
+                                    Status="{Binding PreviousHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
+            </controls:SettingCard>
+            <controls:SettingCard Icon="{StaticResource Icon.Move}" Header="{l:T PositionHotkeysHeader}" Description="{l:T PositionHotkeysDescription}">
+                <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding PositionHotkeysEnabled}"
+                          AutomationProperties.Name="{l:T PositionHotkeysHeader}" />
+                <controls:SettingCard.Body>
+                    <TextBlock Text="{Binding PositionHotkeysStatus}" Style="{StaticResource WarningText}" FontSize="12" TextWrapping="Wrap"
+                               Visibility="{Binding PositionHotkeysStatus, Converter={StaticResource Visible}}" />
+                </controls:SettingCard.Body>
+            </controls:SettingCard>
+            <controls:SettingCard Icon="{StaticResource Icon.Bell}" Header="{l:T PresetNotificationHeader}" Description="{l:T PresetNotificationDescription}">
+                <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding ShowPresetNotifications}"
+                          AutomationProperties.Name="{l:T PresetNotificationHeader}" />
+            </controls:SettingCard>
+            <TextBlock Text="{l:T HotkeysPresetNote}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="2,8,0,0" />
+            <TextBlock Text="{l:T HotkeysNote}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="2,8,0,0" />
         </StackPanel>
-
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,24">
-            <StackPanel MaxWidth="880" HorizontalAlignment="Left">
-                <controls:SettingCard Icon="{StaticResource Icon.Eye}" Header="{l:T HotkeyToggleHeader}" Description="{l:T HotkeyToggleDescription}">
-                    <controls:HotkeyBox Label="{l:T HotkeyToggleHeader}" Hotkey="{Binding ToggleHotkey}"
-                                        Status="{Binding ToggleHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
-                </controls:SettingCard>
-                <controls:SettingCard Icon="{StaticResource Icon.SkipForward}" Header="{l:T HotkeyNextHeader}" Description="{l:T HotkeyNextDescription}">
-                    <controls:HotkeyBox Label="{l:T HotkeyNextHeader}" Hotkey="{Binding NextPresetHotkey}"
-                                        Status="{Binding NextHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
-                </controls:SettingCard>
-                <controls:SettingCard Icon="{StaticResource Icon.SkipBack}" Header="{l:T HotkeyPreviousHeader}" Description="{l:T HotkeyPreviousDescription}">
-                    <controls:HotkeyBox Label="{l:T HotkeyPreviousHeader}" Hotkey="{Binding PreviousPresetHotkey}"
-                                        Status="{Binding PreviousHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
-                </controls:SettingCard>
-                <controls:SettingCard Icon="{StaticResource Icon.Move}" Header="{l:T PositionHotkeysHeader}" Description="{l:T PositionHotkeysDescription}">
-                    <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding PositionHotkeysEnabled}"
-                              AutomationProperties.Name="{l:T PositionHotkeysHeader}" />
-                    <controls:SettingCard.Body>
-                        <TextBlock Text="{Binding PositionHotkeysStatus}" Style="{StaticResource WarningText}" FontSize="12" TextWrapping="Wrap"
-                                   Visibility="{Binding PositionHotkeysStatus, Converter={StaticResource Visible}}" />
-                    </controls:SettingCard.Body>
-                </controls:SettingCard>
-                <controls:SettingCard Icon="{StaticResource Icon.Bell}" Header="{l:T PresetNotificationHeader}" Description="{l:T PresetNotificationDescription}">
-                    <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding ShowPresetNotifications}"
-                              AutomationProperties.Name="{l:T PresetNotificationHeader}" />
-                </controls:SettingCard>
-                <TextBlock Text="{l:T HotkeysPresetNote}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="2,8,0,0" />
-                <TextBlock Text="{l:T HotkeysNote}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="2,8,0,0" />
-            </StackPanel>
-        </ScrollViewer>
-    </DockPanel>
+    </ScrollViewer>
 </UserControl>

@@ -56,11 +56,11 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Margin="{StaticResource EditorPageMargin}" MaxWidth="1280">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" MinWidth="380" />
             <ColumnDefinition Width="24" />
-            <ColumnDefinition Width="360" />
+            <ColumnDefinition Width="2*" MinWidth="320" MaxWidth="440" />
         </Grid.ColumnDefinitions>
 
         <DockPanel>
@@ -94,45 +94,47 @@
             </ListBox>
         </DockPanel>
 
-        <StackPanel Grid.Column="2" Margin="0,8,0,0">
-            <GroupBox Header="{l:T CardPresetDetails}">
-                <StackPanel>
-                    <TextBlock Text="{l:T PresetName}" Style="{StaticResource SecondaryText}" Margin="0,0,0,4" />
-                    <TextBox Text="{Binding SelectedPreset.Name, UpdateSourceTrigger=PropertyChanged}"
-                             MaxLength="{x:Static core:Preset.MaxNameLength}" AutomationProperties.Name="{l:T PresetName}" />
-                    <TextBlock Text="{l:T PresetHotkeyLabel}" Style="{StaticResource SecondaryText}" Margin="0,12,0,4" />
-                    <controls:HotkeyBox HorizontalAlignment="Left" Label="{l:T PresetHotkeyLabel}" Hotkey="{Binding SelectedPreset.Hotkey}"
-                                        Status="{Binding SelectedPreset.HotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
-                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                        <Button Content="{l:T EditDesign}" Click="OnEdit" Margin="0,0,8,0" />
-                        <Button Content="{l:T Delete}" Style="{StaticResource DangerButton}" Click="OnDelete"
-                                IsEnabled="{Binding CanDeletePreset}" />
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" Padding="0,0,4,16">
+            <StackPanel Margin="0,8,0,0">
+                <GroupBox Header="{l:T CardPresetDetails}">
+                    <StackPanel>
+                        <TextBlock Text="{l:T PresetName}" Style="{StaticResource SecondaryText}" Margin="0,0,0,4" />
+                        <TextBox Text="{Binding SelectedPreset.Name, UpdateSourceTrigger=PropertyChanged}"
+                                 MaxLength="{x:Static core:Preset.MaxNameLength}" AutomationProperties.Name="{l:T PresetName}" />
+                        <TextBlock Text="{l:T PresetHotkeyLabel}" Style="{StaticResource SecondaryText}" Margin="0,12,0,4" />
+                        <controls:HotkeyBox HorizontalAlignment="Left" Label="{l:T PresetHotkeyLabel}" Hotkey="{Binding SelectedPreset.Hotkey}"
+                                            Status="{Binding SelectedPreset.HotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                            <Button Content="{l:T EditDesign}" Click="OnEdit" Margin="0,0,8,0" />
+                            <Button Content="{l:T Delete}" Style="{StaticResource DangerButton}" Click="OnDelete"
+                                    IsEnabled="{Binding CanDeletePreset}" />
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </GroupBox>
+                </GroupBox>
 
-            <GroupBox Header="{l:T CardShare}">
-                <StackPanel>
-                    <TextBlock Text="{l:T ShareCode}" Style="{StaticResource SecondaryText}" Margin="0,0,0,4" />
-                    <DockPanel>
-                        <Button DockPanel.Dock="Right" Content="{l:T CopyCode}" Style="{StaticResource AccentButton}"
-                                Margin="8,0,0,0" Click="OnCopy" />
-                        <TextBox Text="{Binding ShareCodeText, Mode=OneWay}" IsReadOnly="True"
-                                 FontFamily="Cascadia Mono, Consolas" FontSize="12" AutomationProperties.Name="{l:T ShareCode}" />
-                    </DockPanel>
-                    <TextBlock Text="{l:T ImportCode}" Style="{StaticResource SecondaryText}" Margin="0,14,0,4" />
-                    <DockPanel>
-                        <Button DockPanel.Dock="Right" Content="{l:T Import}" Margin="8,0,0,0" Click="OnImport" />
-                        <TextBox Text="{Binding ImportCode, UpdateSourceTrigger=PropertyChanged}"
-                                 FontFamily="Cascadia Mono, Consolas" FontSize="12" AutomationProperties.Name="{l:T ImportCode}" />
-                    </DockPanel>
-                    <TextBlock Text="{l:T ImportCodeHint}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0" />
-                    <TextBlock Text="{Binding ShareStatus}" Style="{StaticResource SecondaryText}" FontSize="12" Margin="0,8,0,0"
-                               TextWrapping="Wrap" Visibility="{Binding ShareStatus, Converter={StaticResource Visible}}" />
-                    <TextBlock Text="{l:T ShareOmitsImages}" Style="{StaticResource SecondaryText}" FontSize="12" Margin="0,8,0,0"
-                               TextWrapping="Wrap" Visibility="{Binding ShareOmitsImages, Converter={StaticResource Visible}}" />
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
+                <GroupBox Header="{l:T CardShare}">
+                    <StackPanel>
+                        <TextBlock Text="{l:T ShareCode}" Style="{StaticResource SecondaryText}" Margin="0,0,0,4" />
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{l:T CopyCode}" Style="{StaticResource AccentButton}"
+                                    Margin="8,0,0,0" Click="OnCopy" />
+                            <TextBox Text="{Binding ShareCodeText, Mode=OneWay}" IsReadOnly="True"
+                                     FontFamily="Cascadia Mono, Consolas" FontSize="12" AutomationProperties.Name="{l:T ShareCode}" />
+                        </DockPanel>
+                        <TextBlock Text="{l:T ImportCode}" Style="{StaticResource SecondaryText}" Margin="0,14,0,4" />
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{l:T Import}" Margin="8,0,0,0" Click="OnImport" />
+                            <TextBox Text="{Binding ImportCode, UpdateSourceTrigger=PropertyChanged}"
+                                     FontFamily="Cascadia Mono, Consolas" FontSize="12" AutomationProperties.Name="{l:T ImportCode}" />
+                        </DockPanel>
+                        <TextBlock Text="{l:T ImportCodeHint}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0" />
+                        <TextBlock Text="{Binding ShareStatus}" Style="{StaticResource SecondaryText}" FontSize="12" Margin="0,8,0,0"
+                                   TextWrapping="Wrap" Visibility="{Binding ShareStatus, Converter={StaticResource Visible}}" />
+                        <TextBlock Text="{l:T ShareOmitsImages}" Style="{StaticResource SecondaryText}" FontSize="12" Margin="0,8,0,0"
+                                   TextWrapping="Wrap" Visibility="{Binding ShareOmitsImages, Converter={StaticResource Visible}}" />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

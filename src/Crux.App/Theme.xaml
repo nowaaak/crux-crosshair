@@ -47,6 +47,13 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="PageColumn" TargetType="StackPanel">
+        <Setter Property="MaxWidth" Value="920" />
+        <Setter Property="Margin" Value="28,24,28,32" />
+    </Style>
+
+    <Thickness x:Key="EditorPageMargin">28,24,28,0</Thickness>
+
     <Style x:Key="PageTitle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="24" />
         <Setter Property="FontWeight" Value="SemiBold" />

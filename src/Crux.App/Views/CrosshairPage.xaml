@@ -5,11 +5,11 @@
              xmlns:controls="clr-namespace:Crux.App.Controls"
              xmlns:core="clr-namespace:Crux.Core;assembly=Crux.Core"
              xmlns:l="clr-namespace:Crux.App.Localization">
-    <Grid>
+    <Grid Margin="{StaticResource EditorPageMargin}" MaxWidth="1280">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" MinWidth="380" />
             <ColumnDefinition Width="24" />
-            <ColumnDefinition Width="360" />
+            <ColumnDefinition Width="2*" MinWidth="320" MaxWidth="440" />
         </Grid.ColumnDefinitions>
 
         <DockPanel>
@@ -357,28 +357,28 @@
                                                    TextWrapping="Wrap" TextAlignment="Center" Margin="0,4,0,0" />
                                     </StackPanel>
                                 </Border>
+                                <Border Background="{DynamicResource PreviewOverlayBrush}" CornerRadius="6" Padding="6,2,6,3" Margin="8"
+                                        HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False">
+                                    <TextBlock Text="{Binding PreviewScaleText}" Style="{StaticResource SecondaryText}" FontSize="11" />
+                                </Border>
                             </Grid>
                         </Border>
-                        <DockPanel Margin="0,10,0,0">
-                            <TextBlock DockPanel.Dock="Right" Text="{Binding PreviewScaleText}" Style="{StaticResource SecondaryText}"
-                                       FontSize="12" VerticalAlignment="Center" />
-                            <Border Style="{StaticResource SegmentHost}">
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="Scene" Padding="10,4" FontSize="12"
-                                                 Content="{l:T SceneDark}"
-                                                 IsChecked="{Binding PreviewScene, Converter={StaticResource EnumMatch}, ConverterParameter=Dark}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="Scene" Padding="10,4" FontSize="12"
-                                                 Content="{l:T SceneLight}"
-                                                 IsChecked="{Binding PreviewScene, Converter={StaticResource EnumMatch}, ConverterParameter=Light}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="Scene" Padding="10,4" FontSize="12"
-                                                 Content="{l:T SceneSky}"
-                                                 IsChecked="{Binding PreviewScene, Converter={StaticResource EnumMatch}, ConverterParameter=Sky}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="Scene" Padding="10,4" FontSize="12"
-                                                 Content="{l:T SceneForest}"
-                                                 IsChecked="{Binding PreviewScene, Converter={StaticResource EnumMatch}, ConverterParameter=Forest}" />
-                                </StackPanel>
-                            </Border>
-                        </DockPanel>
+                        <Border Style="{StaticResource SegmentHost}" Margin="0,10,0,0" HorizontalAlignment="Stretch">
+                            <UniformGrid Rows="1">
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="Scene" Padding="10,4" FontSize="12"
+                                             Content="{l:T SceneDark}"
+                                             IsChecked="{Binding PreviewScene, Converter={StaticResource EnumMatch}, ConverterParameter=Dark}" />
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="Scene" Padding="10,4" FontSize="12"
+                                             Content="{l:T SceneLight}"
+                                             IsChecked="{Binding PreviewScene, Converter={StaticResource EnumMatch}, ConverterParameter=Light}" />
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="Scene" Padding="10,4" FontSize="12"
+                                             Content="{l:T SceneSky}"
+                                             IsChecked="{Binding PreviewScene, Converter={StaticResource EnumMatch}, ConverterParameter=Sky}" />
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="Scene" Padding="10,4" FontSize="12"
+                                             Content="{l:T SceneForest}"
+                                             IsChecked="{Binding PreviewScene, Converter={StaticResource EnumMatch}, ConverterParameter=Forest}" />
+                            </UniformGrid>
+                        </Border>
                         <TextBlock Text="{Binding PreviewModeHint}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap"
                                    Margin="0,8,0,0" Visibility="{Binding PreviewModeHint, Converter={StaticResource Visible}}" />
                     </StackPanel>

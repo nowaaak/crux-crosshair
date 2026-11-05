@@ -4,138 +4,133 @@
              xmlns:app="clr-namespace:Crux.App"
              xmlns:controls="clr-namespace:Crux.App.Controls"
              xmlns:l="clr-namespace:Crux.App.Localization">
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Top">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Style="{StaticResource PageColumn}">
             <TextBlock Text="{l:T NavOverlay}" Style="{StaticResource PageTitle}" />
             <TextBlock Text="{l:T OverlaySubtitle}" Style="{StaticResource PageSubtitle}" />
+            <TextBlock Text="{l:T SectionPlacement}" Style="{StaticResource SectionHeader}" Margin="2,0,0,8" />
+            <controls:SettingCard Icon="{StaticResource Icon.Monitor}" Header="{l:T MonitorHeader}" Description="{l:T MonitorDescription}">
+                <ComboBox Width="300" ItemsSource="{Binding Monitors}" SelectedItem="{Binding SelectedMonitor, Mode=TwoWay}"
+                          DisplayMemberPath="Label" AutomationProperties.Name="{l:T MonitorHeader}" />
+            </controls:SettingCard>
+            <controls:SettingCard Icon="{StaticResource Icon.Move}" Header="{l:T OffsetHeader}" Description="{l:T OffsetDescription}">
+                <Button Content="{l:T Reset}" Click="OnResetOffset" />
+                <controls:SettingCard.Body>
+                    <StackPanel>
+                        <app:SettingSlider Label="{l:T OffsetX}" Value="{Binding OffsetX}" Minimum="{Binding MinOffset}" Maximum="{Binding MaxOffset}" />
+                        <app:SettingSlider Label="{l:T OffsetY}" Value="{Binding OffsetY}" Minimum="{Binding MinOffset}" Maximum="{Binding MaxOffset}" />
+                    </StackPanel>
+                </controls:SettingCard.Body>
+            </controls:SettingCard>
+
+            <TextBlock Text="{l:T SectionGames}" Style="{StaticResource SectionHeader}" />
+            <controls:SettingCard Icon="{StaticResource Icon.Gamepad}" Header="{l:T GamesHeader}" Description="{l:T GamesDescription}">
+                <controls:SettingCard.Body>
+                    <StackPanel>
+                        <TextBlock Text="{l:T GamesEmpty}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,6"
+                                   Visibility="{Binding HasGameRules, Converter={StaticResource Collapsed}}" />
+                        <ItemsControl ItemsSource="{Binding GameRules}" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource ControlBrush}" BorderBrush="{DynamicResource ControlBorderBrush}"
+                                            BorderThickness="1" CornerRadius="6" Padding="10,4,4,4" Margin="0,0,0,6">
+                                        <DockPanel>
+                                            <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Content="{StaticResource Icon.X}"
+                                                    Width="28" Height="28" Margin="6,0,0,0" Tag="{Binding}" Click="OnRemoveRule"
+                                                    AutomationProperties.Name="{l:T Remove}" />
+                                            <ComboBox DockPanel.Dock="Right" Width="200"
+                                                      ItemsSource="{Binding DataContext.PresetChoices, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                      DisplayMemberPath="Name" SelectedValuePath="Id"
+                                                      SelectedValue="{Binding PresetId, Mode=TwoWay}"
+                                                      AutomationProperties.Name="{l:T RulePresetLabel}" />
+                                            <controls:IconElement DockPanel.Dock="Left" Margin="0,0,10,0" Foreground="{DynamicResource AccentBrush}">
+                                                <controls:IconElement.Style>
+                                                    <Style TargetType="controls:IconElement">
+                                                        <Setter Property="Data" Value="{StaticResource Icon.AppWindow}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsProcess}" Value="True">
+                                                                <Setter Property="Data" Value="{StaticResource Icon.Gamepad}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </controls:IconElement.Style>
+                                            </controls:IconElement>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Pattern}" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Text="{l:T RuleKindProcess}" Style="{StaticResource SecondaryText}" FontSize="11"
+                                                           Visibility="{Binding IsProcess, Converter={StaticResource Visible}}" />
+                                                <TextBlock Text="{l:T RuleKindTitle}" Style="{StaticResource SecondaryText}" FontSize="11"
+                                                           Visibility="{Binding IsProcess, Converter={StaticResource Collapsed}}" />
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <DockPanel Margin="0,6,0,0">
+                            <Button DockPanel.Dock="Right" Content="{l:T CaptureWindow}" Margin="8,0,0,0" Click="OnCaptureWindow"
+                                    IsEnabled="{Binding IsCapturingWindow, Converter={x:Static controls:Inverter.Instance}}" />
+                            <Button DockPanel.Dock="Right" Content="{l:T Add}" Margin="8,0,0,0" Click="OnAddRule" />
+                            <TextBox Text="{Binding NewGameTitle, UpdateSourceTrigger=PropertyChanged}" KeyDown="OnRuleKeyDown"
+                                     AutomationProperties.Name="{l:T GameRuleInputLabel}" />
+                        </DockPanel>
+                        <TextBlock Text="{l:T GameRuleInputHint}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0" />
+                        <TextBlock Text="{Binding CaptureStatus}" Style="{StaticResource SecondaryText}" FontSize="12" Margin="0,6,0,0"
+                                   TextWrapping="Wrap" Visibility="{Binding CaptureStatus, Converter={StaticResource Visible}}" />
+                    </StackPanel>
+                </controls:SettingCard.Body>
+            </controls:SettingCard>
+            <controls:SettingCard Icon="{StaticResource Icon.Eye}" Header="{l:T GameOnlyHeader}" Description="{l:T GameOnlyDescription}">
+                <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding ShowOnlyOverGame}"
+                          AutomationProperties.Name="{l:T GameOnlyHeader}" />
+            </controls:SettingCard>
+
+            <TextBlock Text="{l:T SectionBehavior}" Style="{StaticResource SectionHeader}" />
+            <controls:SettingCard Icon="{StaticResource Icon.Mouse}" Header="{l:T AimHideHeader}" Description="{l:T AimHideDescription}">
+                <controls:SettingCard.Body>
+                    <StackPanel>
+                        <Border Style="{StaticResource SegmentHost}" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonNone}"
+                                             IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=None}" />
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonRight}"
+                                             IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=Right}" />
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonMiddle}"
+                                             IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=Middle}" />
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonBack}"
+                                             IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=Back}" />
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonForward}"
+                                             IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=Forward}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource SegmentHost}" HorizontalAlignment="Left" Margin="0,10,0,0"
+                                Visibility="{Binding IsAimHideEnabled, Converter={StaticResource Visible}}">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimMode" Content="{l:T AimModeHold}"
+                                             IsChecked="{Binding AimHideMode, Converter={StaticResource EnumMatch}, ConverterParameter=Hold}" />
+                                <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimMode" Content="{l:T AimModeToggle}"
+                                             IsChecked="{Binding AimHideMode, Converter={StaticResource EnumMatch}, ConverterParameter=Toggle}" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </controls:SettingCard.Body>
+            </controls:SettingCard>
+            <controls:SettingCard Icon="{StaticResource Icon.Video}" Header="{l:T StreamerHeader}" Description="{l:T StreamerDescription}">
+                <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding StreamerMode}"
+                          AutomationProperties.Name="{l:T StreamerHeader}" />
+            </controls:SettingCard>
+
+            <Border Style="{StaticResource Card}" Background="{DynamicResource AccentSubtleBrush}"
+                    BorderBrush="{DynamicResource AccentSubtleBorderBrush}" Margin="0,12,0,0">
+                <DockPanel>
+                    <controls:IconElement DockPanel.Dock="Left" Data="{StaticResource Icon.Info}" Size="18" VerticalAlignment="Top"
+                                          Foreground="{DynamicResource AccentBrush}" Margin="2,1,16,0" />
+                    <StackPanel>
+                        <TextBlock Text="{l:T FortniteHintTitle}" FontWeight="SemiBold" />
+                        <TextBlock Text="{l:T FortniteHintText}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
         </StackPanel>
-
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,24">
-            <StackPanel MaxWidth="880" HorizontalAlignment="Left">
-                <TextBlock Text="{l:T SectionPlacement}" Style="{StaticResource SectionHeader}" Margin="2,0,0,8" />
-                <controls:SettingCard Icon="{StaticResource Icon.Monitor}" Header="{l:T MonitorHeader}" Description="{l:T MonitorDescription}">
-                    <ComboBox Width="300" ItemsSource="{Binding Monitors}" SelectedItem="{Binding SelectedMonitor, Mode=TwoWay}"
-                              DisplayMemberPath="Label" AutomationProperties.Name="{l:T MonitorHeader}" />
-                </controls:SettingCard>
-                <controls:SettingCard Icon="{StaticResource Icon.Move}" Header="{l:T OffsetHeader}" Description="{l:T OffsetDescription}">
-                    <Button Content="{l:T Reset}" Click="OnResetOffset" />
-                    <controls:SettingCard.Body>
-                        <StackPanel>
-                            <app:SettingSlider Label="{l:T OffsetX}" Value="{Binding OffsetX}" Minimum="{Binding MinOffset}" Maximum="{Binding MaxOffset}" />
-                            <app:SettingSlider Label="{l:T OffsetY}" Value="{Binding OffsetY}" Minimum="{Binding MinOffset}" Maximum="{Binding MaxOffset}" />
-                        </StackPanel>
-                    </controls:SettingCard.Body>
-                </controls:SettingCard>
-
-                <TextBlock Text="{l:T SectionGames}" Style="{StaticResource SectionHeader}" />
-                <controls:SettingCard Icon="{StaticResource Icon.Gamepad}" Header="{l:T GamesHeader}" Description="{l:T GamesDescription}">
-                    <controls:SettingCard.Body>
-                        <StackPanel>
-                            <TextBlock Text="{l:T GamesEmpty}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,6"
-                                       Visibility="{Binding HasGameRules, Converter={StaticResource Collapsed}}" />
-                            <ItemsControl ItemsSource="{Binding GameRules}" Focusable="False">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Background="{DynamicResource ControlBrush}" BorderBrush="{DynamicResource ControlBorderBrush}"
-                                                BorderThickness="1" CornerRadius="6" Padding="10,4,4,4" Margin="0,0,0,6">
-                                            <DockPanel>
-                                                <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Content="{StaticResource Icon.X}"
-                                                        Width="28" Height="28" Margin="6,0,0,0" Tag="{Binding}" Click="OnRemoveRule"
-                                                        AutomationProperties.Name="{l:T Remove}" />
-                                                <ComboBox DockPanel.Dock="Right" Width="200"
-                                                          ItemsSource="{Binding DataContext.PresetChoices, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                          DisplayMemberPath="Name" SelectedValuePath="Id"
-                                                          SelectedValue="{Binding PresetId, Mode=TwoWay}"
-                                                          AutomationProperties.Name="{l:T RulePresetLabel}" />
-                                                <controls:IconElement DockPanel.Dock="Left" Margin="0,0,10,0" Foreground="{DynamicResource AccentBrush}">
-                                                    <controls:IconElement.Style>
-                                                        <Style TargetType="controls:IconElement">
-                                                            <Setter Property="Data" Value="{StaticResource Icon.AppWindow}" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsProcess}" Value="True">
-                                                                    <Setter Property="Data" Value="{StaticResource Icon.Gamepad}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </controls:IconElement.Style>
-                                                </controls:IconElement>
-                                                <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Pattern}" TextTrimming="CharacterEllipsis" />
-                                                    <TextBlock Text="{l:T RuleKindProcess}" Style="{StaticResource SecondaryText}" FontSize="11"
-                                                               Visibility="{Binding IsProcess, Converter={StaticResource Visible}}" />
-                                                    <TextBlock Text="{l:T RuleKindTitle}" Style="{StaticResource SecondaryText}" FontSize="11"
-                                                               Visibility="{Binding IsProcess, Converter={StaticResource Collapsed}}" />
-                                                </StackPanel>
-                                            </DockPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <DockPanel Margin="0,6,0,0">
-                                <Button DockPanel.Dock="Right" Content="{l:T CaptureWindow}" Margin="8,0,0,0" Click="OnCaptureWindow"
-                                        IsEnabled="{Binding IsCapturingWindow, Converter={x:Static controls:Inverter.Instance}}" />
-                                <Button DockPanel.Dock="Right" Content="{l:T Add}" Margin="8,0,0,0" Click="OnAddRule" />
-                                <TextBox Text="{Binding NewGameTitle, UpdateSourceTrigger=PropertyChanged}" KeyDown="OnRuleKeyDown"
-                                         AutomationProperties.Name="{l:T GameRuleInputLabel}" />
-                            </DockPanel>
-                            <TextBlock Text="{l:T GameRuleInputHint}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0" />
-                            <TextBlock Text="{Binding CaptureStatus}" Style="{StaticResource SecondaryText}" FontSize="12" Margin="0,6,0,0"
-                                       TextWrapping="Wrap" Visibility="{Binding CaptureStatus, Converter={StaticResource Visible}}" />
-                        </StackPanel>
-                    </controls:SettingCard.Body>
-                </controls:SettingCard>
-                <controls:SettingCard Icon="{StaticResource Icon.Eye}" Header="{l:T GameOnlyHeader}" Description="{l:T GameOnlyDescription}">
-                    <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding ShowOnlyOverGame}"
-                              AutomationProperties.Name="{l:T GameOnlyHeader}" />
-                </controls:SettingCard>
-
-                <TextBlock Text="{l:T SectionBehavior}" Style="{StaticResource SectionHeader}" />
-                <controls:SettingCard Icon="{StaticResource Icon.Mouse}" Header="{l:T AimHideHeader}" Description="{l:T AimHideDescription}">
-                    <controls:SettingCard.Body>
-                        <StackPanel>
-                            <Border Style="{StaticResource SegmentHost}" HorizontalAlignment="Left">
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonNone}"
-                                                 IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=None}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonRight}"
-                                                 IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=Right}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonMiddle}"
-                                                 IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=Middle}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonBack}"
-                                                 IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=Back}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimButton" Content="{l:T AimButtonForward}"
-                                                 IsChecked="{Binding AimHideButton, Converter={StaticResource EnumMatch}, ConverterParameter=Forward}" />
-                                </StackPanel>
-                            </Border>
-                            <Border Style="{StaticResource SegmentHost}" HorizontalAlignment="Left" Margin="0,10,0,0"
-                                    Visibility="{Binding IsAimHideEnabled, Converter={StaticResource Visible}}">
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimMode" Content="{l:T AimModeHold}"
-                                                 IsChecked="{Binding AimHideMode, Converter={StaticResource EnumMatch}, ConverterParameter=Hold}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" GroupName="AimMode" Content="{l:T AimModeToggle}"
-                                                 IsChecked="{Binding AimHideMode, Converter={StaticResource EnumMatch}, ConverterParameter=Toggle}" />
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                    </controls:SettingCard.Body>
-                </controls:SettingCard>
-                <controls:SettingCard Icon="{StaticResource Icon.Video}" Header="{l:T StreamerHeader}" Description="{l:T StreamerDescription}">
-                    <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding StreamerMode}"
-                              AutomationProperties.Name="{l:T StreamerHeader}" />
-                </controls:SettingCard>
-
-                <Border Style="{StaticResource Card}" Background="{DynamicResource AccentSubtleBrush}"
-                        BorderBrush="{DynamicResource AccentSubtleBorderBrush}" Margin="0,12,0,0">
-                    <DockPanel>
-                        <controls:IconElement DockPanel.Dock="Left" Data="{StaticResource Icon.Info}" Size="18" VerticalAlignment="Top"
-                                              Foreground="{DynamicResource AccentBrush}" Margin="2,1,16,0" />
-                        <StackPanel>
-                            <TextBlock Text="{l:T FortniteHintTitle}" FontWeight="SemiBold" />
-                            <TextBlock Text="{l:T FortniteHintText}" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
-                        </StackPanel>
-                    </DockPanel>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
-    </DockPanel>
+    </ScrollViewer>
 </UserControl>
