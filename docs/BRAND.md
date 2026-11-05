@@ -27,20 +27,20 @@
 
 ## Logo
 
-Four arms around an open center. Each arm ends in a point that aims at the center.
+A diamond split by a cross-shaped gap into four triangular facets, with a small diamond core in the center. The crosshair is the negative space.
 
 - Source of truth: `LogoGeometry` in `src/Crux.App/Theme.xaml`, drawn on a 64 by 64 grid.
-- The app icon puts the geometry on a rounded square (corner radius 14 on the 64 grid).
-- Keep the open center. Do not add a center dot. It disappears at 16 px.
-- Do not rotate, outline or recolor the arms outside the colors below.
+- The emblem stands on its own without a tile or background, so it works on light and dark taskbars.
+- Keep the gap between the facets at 8 units on the 64 grid. Narrower gaps close up at 16 px.
+- Do not rotate the emblem, add outlines or use colors other than the ones below.
 
 ## Colors
 
 | Use | Color |
 |---|---|
-| Logo arms (release) | `#60CDFF` (same as the app accent) |
-| Logo arms (debug) | `#16A34A` |
-| Logo background | `#171717` (same as the sidebar) |
+| Logo gradient (release) | `#60CDFF` top left to `#2563EB` bottom right |
+| Logo gradient (debug) | `#4ADE80` top left to `#15803D` bottom right |
+| App accent | `#60CDFF` |
 
 ## Regenerating the icons
 

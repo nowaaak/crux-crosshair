@@ -12,12 +12,10 @@ const string ThemePath = "src/Crux.App/Theme.xaml";
 const string AssetsDirectory = "src/Crux.App/Assets";
 const string DocsDirectory = "docs";
 const double DesignSize = 64;
-const double CornerRadius = 14;
 
 int[] iconSizes = [16, 20, 24, 32, 40, 48, 64, 256];
-var background = Color.FromRgb(23, 23, 23);
-var releaseForeground = Color.FromRgb(96, 205, 255);
-var devForeground = Color.FromRgb(22, 163, 74);
+var releaseBrush = LogoBrush(Color.FromRgb(96, 205, 255), Color.FromRgb(37, 99, 235));
+var devBrush = LogoBrush(Color.FromRgb(74, 222, 128), Color.FromRgb(21, 128, 61));
 
 if (!File.Exists("Crux.sln"))
 {
@@ -31,10 +29,10 @@ var thread = new Thread(() =>
     try
     {
         var geometry = LoadLogoGeometry(ThemePath);
-        WriteIcon(Path.Combine(AssetsDirectory, "app.ico"), geometry, releaseForeground);
-        WriteIcon(Path.Combine(AssetsDirectory, "app-dev.ico"), geometry, devForeground);
+        WriteIcon(Path.Combine(AssetsDirectory, "app.ico"), geometry, releaseBrush);
+        WriteIcon(Path.Combine(AssetsDirectory, "app-dev.ico"), geometry, devBrush);
         Directory.CreateDirectory(DocsDirectory);
-        File.WriteAllBytes(Path.Combine(DocsDirectory, "logo.png"), RenderPng(geometry, releaseForeground, 256));
+        File.WriteAllBytes(Path.Combine(DocsDirectory, "logo.png"), RenderPng(geometry, releaseBrush, 256));
     }
     catch (Exception exception)
     {
@@ -66,14 +64,13 @@ Geometry LoadLogoGeometry(string themePath)
     return geometry;
 }
 
-byte[] RenderPng(Geometry geometry, Color foreground, int size)
+byte[] RenderPng(Geometry geometry, Brush brush, int size)
 {
     var visual = new DrawingVisual();
     using (var context = visual.RenderOpen())
     {
         context.PushTransform(new ScaleTransform(size / DesignSize, size / DesignSize));
-        context.DrawRoundedRectangle(new SolidColorBrush(background), null, new Rect(0, 0, DesignSize, DesignSize), CornerRadius, CornerRadius);
-        context.DrawGeometry(new SolidColorBrush(foreground), null, geometry);
+        context.DrawGeometry(brush, null, geometry);
         context.Pop();
     }
 
@@ -86,9 +83,9 @@ byte[] RenderPng(Geometry geometry, Color foreground, int size)
     return stream.ToArray();
 }
 
-void WriteIcon(string path, Geometry geometry, Color foreground)
+void WriteIcon(string path, Geometry geometry, Brush brush)
 {
-    var images = iconSizes.Select(size => (Size: size, Png: RenderPng(geometry, foreground, size))).ToList();
+    var images = iconSizes.Select(size => (Size: size, Png: RenderPng(geometry, brush, size))).ToList();
     using var stream = File.Create(path);
     using var writer = new BinaryWriter(stream);
     writer.Write((ushort)0);
@@ -113,4 +110,11 @@ void WriteIcon(string path, Geometry geometry, Color foreground)
     {
         writer.Write(image.Png);
     }
+}
+
+Brush LogoBrush(Color start, Color end)
+{
+    var brush = new LinearGradientBrush(start, end, new Point(0, 0), new Point(1, 1));
+    brush.Freeze();
+    return brush;
 }

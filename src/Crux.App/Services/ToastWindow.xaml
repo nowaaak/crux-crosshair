@@ -18,9 +18,7 @@
     <Border Width="360" Margin="12" Padding="14,12" CornerRadius="10"
             Background="{StaticResource PopupBrush}" BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1">
         <DockPanel>
-            <Border DockPanel.Dock="Left" Width="32" Height="32" CornerRadius="7" Background="{DynamicResource LogoBackgroundBrush}" VerticalAlignment="Top">
-                <Path Data="{StaticResource LogoGeometry}" Fill="{DynamicResource LogoForegroundBrush}" Stretch="Uniform" Margin="6" />
-            </Border>
+            <Path DockPanel.Dock="Left" Width="28" Height="28" Margin="2" VerticalAlignment="Top" Data="{StaticResource LogoGeometry}" Fill="{DynamicResource LogoBrush}" Stretch="Uniform" />
             <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10"
                     VerticalAlignment="Top" Click="OnClose" AutomationProperties.Name="{l:T Close}" />
             <StackPanel Margin="12,0,8,0">

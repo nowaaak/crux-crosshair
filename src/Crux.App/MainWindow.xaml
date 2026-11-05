@@ -30,10 +30,7 @@
         <Border Background="{StaticResource SidebarBrush}" BorderBrush="{StaticResource CardBorderBrush}" BorderThickness="0,0,1,0">
             <DockPanel Margin="12,0,12,16">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8,14,0,22">
-                    <Border Width="34" Height="34" CornerRadius="8" Background="{DynamicResource LogoBackgroundBrush}"
-                            BorderBrush="{StaticResource CardBorderBrush}" BorderThickness="1">
-                        <Path Data="{StaticResource LogoGeometry}" Fill="{DynamicResource LogoForegroundBrush}" Stretch="Uniform" Margin="7" />
-                    </Border>
+                    <Path Width="34" Height="34" Data="{StaticResource LogoGeometry}" Fill="{DynamicResource LogoBrush}" Stretch="Uniform" />
                     <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="{DynamicResource AppDisplayName}" FontWeight="SemiBold" FontSize="15" />
                         <TextBlock Text="{Binding VersionText}" Style="{StaticResource SecondaryText}" FontSize="11" />

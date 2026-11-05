@@ -67,10 +67,12 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
-    <SolidColorBrush x:Key="LogoBackgroundBrush" Color="#FF171717" />
-    <SolidColorBrush x:Key="LogoForegroundBrush" Color="#FF60CDFF" />
+    <LinearGradientBrush x:Key="LogoBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Offset="0" Color="#FF60CDFF" />
+        <GradientStop Offset="1" Color="#FF2563EB" />
+    </LinearGradientBrush>
 
-    <Geometry x:Key="LogoGeometry">M 26,4 H 38 V 18 L 32,26 L 26,18 Z M 26,60 H 38 V 46 L 32,38 L 26,46 Z M 4,26 V 38 H 18 L 26,32 L 18,26 Z M 60,26 V 38 H 46 L 38,32 L 46,26 Z</Geometry>
+    <Geometry x:Key="LogoGeometry">M 36,6 L 58,28 L 36,28 Z M 36,36 L 58,36 L 36,58 Z M 28,36 L 28,58 L 6,36 Z M 28,28 L 6,28 L 28,6 Z M 32,27 L 37,32 L 32,37 L 27,32 Z</Geometry>
 
     <FontFamily x:Key="IconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
 
