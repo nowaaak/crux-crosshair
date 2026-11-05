@@ -19,8 +19,8 @@ internal static class AppIdentity
     public const string DisplayName = "Crux";
     public const bool IsDevBuild = false;
     public const string IconFile = "app.ico";
-    public static readonly Color LogoGradientStart = Color.FromRgb(96, 205, 255);
-    public static readonly Color LogoGradientEnd = Color.FromRgb(37, 99, 235);
+    public static readonly Color LogoGradientStart = Color.FromRgb(129, 140, 248);
+    public static readonly Color LogoGradientEnd = Color.FromRgb(79, 70, 229);
 #endif
 
     public const string ProductName = "Crux";

@@ -38,7 +38,7 @@ A diamond split by a cross-shaped gap into four triangular facets, with a small 
 
 | Use | Color |
 |---|---|
-| Logo gradient (release) | `#60CDFF` top left to `#2563EB` bottom right |
+| Logo gradient (release) | `#818CF8` top left to `#4F46E5` bottom right (indigo, matches the app accent) |
 | Logo gradient (debug) | `#4ADE80` top left to `#15803D` bottom right |
 | App accent | `#666AF9` (dark), `#4F46E5` (light). See the design system below. |
 

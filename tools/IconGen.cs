@@ -14,7 +14,7 @@ const string DocsDirectory = "docs";
 const double DesignSize = 64;
 
 int[] iconSizes = [16, 20, 24, 32, 40, 48, 64, 256];
-var releaseBrush = LogoBrush(Color.FromRgb(96, 205, 255), Color.FromRgb(37, 99, 235));
+var releaseBrush = LogoBrush(Color.FromRgb(129, 140, 248), Color.FromRgb(79, 70, 229));
 var devBrush = LogoBrush(Color.FromRgb(74, 222, 128), Color.FromRgb(21, 128, 61));
 
 if (!File.Exists("Crux.sln"))

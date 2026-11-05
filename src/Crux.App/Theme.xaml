@@ -8,8 +8,8 @@
     <Duration x:Key="ToggleDuration">0:0:0.15</Duration>
 
     <LinearGradientBrush x:Key="LogoBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Offset="0" Color="#FF60CDFF" />
-        <GradientStop Offset="1" Color="#FF2563EB" />
+        <GradientStop Offset="0" Color="#FF818CF8" />
+        <GradientStop Offset="1" Color="#FF4F46E5" />
     </LinearGradientBrush>
 
     <Geometry x:Key="LogoGeometry">M 36,6 L 58,28 L 36,28 Z M 36,36 L 58,36 L 36,58 Z M 28,36 L 28,58 L 6,36 Z M 28,28 L 6,28 L 28,6 Z M 32,27 L 37,32 L 32,37 L 27,32 Z</Geometry>
