@@ -1,9 +1,12 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Crux.App.Controls;
 using Crux.App.Localization;
 using Crux.App.Native;
+using Crux.App.Services;
 
 namespace Crux.App;
 
@@ -11,21 +14,26 @@ internal partial class MainWindow : Window
 {
     private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
     private const int DWMWCP_ROUND = 2;
-    private const int BorderColor = 0x00333333;
+    private const int DarkBorderColor = 0x00262626;
+    private const int LightBorderColor = 0x00DEDEDE;
     private const double MaximizedInset = 7;
 
     private readonly MainViewModel viewModel;
+    private readonly ThemeService theme;
     private TaskCompletionSource<bool>? dialogResult;
 
-    public MainWindow(MainViewModel viewModel)
+    public MainWindow(MainViewModel viewModel, ThemeService theme)
     {
         this.viewModel = viewModel;
+        this.theme = theme;
         DataContext = viewModel;
         InitializeComponent();
         Title = AppIdentity.DisplayName;
         Icon = BitmapFrame.Create(AppIdentity.IconUri);
         StateChanged += OnStateChanged;
         PreviewKeyDown += OnWindowPreviewKeyDown;
+        theme.Changed += OnThemeChanged;
+        Closed += (_, _) => theme.Changed -= OnThemeChanged;
     }
 
     public Task<bool> ConfirmAsync(string title, string message, string confirmText, bool destructive)
@@ -47,9 +55,22 @@ internal partial class MainWindow : Window
         base.OnSourceInitialized(e);
 
         var handle = new WindowInteropHelper(this).Handle;
-        Dwmapi.SetInt(handle, Dwmapi.DWMWA_USE_IMMERSIVE_DARK_MODE, 1);
         Dwmapi.SetInt(handle, DWMWA_WINDOW_CORNER_PREFERENCE, DWMWCP_ROUND);
-        Dwmapi.SetInt(handle, Dwmapi.DWMWA_BORDER_COLOR, BorderColor);
+        ApplyFrameTheme();
+    }
+
+    private void OnThemeChanged(object? sender, EventArgs e) => ApplyFrameTheme();
+
+    private void ApplyFrameTheme()
+    {
+        var handle = new WindowInteropHelper(this).Handle;
+        if (handle == 0)
+        {
+            return;
+        }
+
+        Dwmapi.SetInt(handle, Dwmapi.DWMWA_USE_IMMERSIVE_DARK_MODE, theme.IsDark ? 1 : 0);
+        Dwmapi.SetInt(handle, Dwmapi.DWMWA_BORDER_COLOR, theme.IsDark ? DarkBorderColor : LightBorderColor);
     }
 
     private void OnStateChanged(object? sender, EventArgs e)
@@ -62,7 +83,12 @@ internal partial class MainWindow : Window
 
         var maximized = WindowState == WindowState.Maximized;
         RootGrid.Margin = maximized ? new Thickness(MaximizedInset) : new Thickness(0);
-        MaximizeButton.Content = maximized ? "" : "";
+        MaximizeButton.Content = new IconElement
+        {
+            Data = (Geometry)FindResource(maximized ? "Icon.Copy" : "Icon.Square"),
+            RenderTransformOrigin = new Point(0.5, 0.5),
+            RenderTransform = maximized ? new ScaleTransform(-1, 1) : Transform.Identity,
+        };
         MaximizeButton.SetValue(
             System.Windows.Automation.AutomationProperties.NameProperty,
             Loc.T(maximized ? "WindowRestore" : "WindowMaximize"));

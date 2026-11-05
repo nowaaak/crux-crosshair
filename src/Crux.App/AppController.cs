@@ -38,6 +38,7 @@ internal sealed class AppController : IDisposable
     private readonly HotkeyService hotkeys;
     private readonly TrayIcon tray;
     private readonly ToastService toasts = new();
+    private readonly ThemeService theme = new();
     private readonly DispatcherTimer saveTimer;
     private readonly DispatcherTimer updateTimer;
     private readonly UpdateService updateService = new();
@@ -56,6 +57,7 @@ internal sealed class AppController : IDisposable
         loadResult = store.Load();
         savingBlocked = loadResult.Status == ConfigLoadStatus.Unreadable;
         Loc.Instance.SetLanguage(loadResult.Config.Language);
+        theme.Apply(loadResult.Config.Theme);
 
         autostartRepairError = MigrateLegacyAutostart();
         if (autostartRepairError is null && updateService.IsInstalled)
@@ -133,7 +135,7 @@ internal sealed class AppController : IDisposable
         if (window is null)
         {
             viewModel.RefreshMonitors();
-            window = new MainWindow(viewModel);
+            window = new MainWindow(viewModel, theme);
             window.Closed += OnWindowClosed;
         }
 
@@ -168,6 +170,7 @@ internal sealed class AppController : IDisposable
         tray.Dispose();
         hotkeys.Dispose();
         overlay.Dispose();
+        theme.Dispose();
     }
 
     private static string? MigrateLegacyAutostart()
@@ -232,6 +235,11 @@ internal sealed class AppController : IDisposable
         if (kind.HasFlag(ChangeKind.Language))
         {
             Loc.Instance.SetLanguage(viewModel.Language);
+        }
+
+        if (kind.HasFlag(ChangeKind.Theme))
+        {
+            theme.Apply(viewModel.Theme);
         }
 
         if (kind.HasFlag(ChangeKind.Overlay))

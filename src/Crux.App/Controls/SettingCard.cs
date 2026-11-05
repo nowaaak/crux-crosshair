@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Crux.App.Controls;
 
@@ -11,8 +12,8 @@ public class SettingCard : ContentControl
     public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
         nameof(Description), typeof(string), typeof(SettingCard), new PropertyMetadata(string.Empty));
 
-    public static readonly DependencyProperty GlyphProperty = DependencyProperty.Register(
-        nameof(Glyph), typeof(string), typeof(SettingCard), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
+        nameof(Icon), typeof(Geometry), typeof(SettingCard), new PropertyMetadata(null));
 
     public static readonly DependencyProperty BodyProperty = DependencyProperty.Register(
         nameof(Body), typeof(object), typeof(SettingCard), new PropertyMetadata(null));
@@ -34,10 +35,10 @@ public class SettingCard : ContentControl
         set => SetValue(DescriptionProperty, value);
     }
 
-    public string Glyph
+    public Geometry? Icon
     {
-        get => (string)GetValue(GlyphProperty);
-        set => SetValue(GlyphProperty, value);
+        get => (Geometry?)GetValue(IconProperty);
+        set => SetValue(IconProperty, value);
     }
 
     public object? Body

@@ -13,13 +13,13 @@
         SizeToContent="WidthAndHeight"
         FontFamily="{StaticResource UiFont}"
         FontSize="14"
-        Foreground="{StaticResource TextBrush}"
+        Foreground="{DynamicResource TextBrush}"
         UseLayoutRounding="True">
-    <Border Width="360" Margin="12" Padding="14,12" CornerRadius="10"
-            Background="{StaticResource PopupBrush}" BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1">
+    <Border Width="360" Margin="12" Padding="14,12" CornerRadius="14"
+            Background="{DynamicResource PopupBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
         <DockPanel>
             <Path DockPanel.Dock="Left" Width="28" Height="28" Margin="2" VerticalAlignment="Top" Data="{StaticResource LogoGeometry}" Fill="{DynamicResource LogoBrush}" Stretch="Uniform" />
-            <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10"
+            <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Content="{StaticResource Icon.X}" Width="28" Height="28"
                     VerticalAlignment="Top" Click="OnClose" AutomationProperties.Name="{l:T Close}" />
             <StackPanel Margin="12,0,8,0">
                 <TextBlock Text="{DynamicResource AppDisplayName}" FontWeight="SemiBold" />

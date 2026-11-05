@@ -11,19 +11,19 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,24">
             <StackPanel MaxWidth="880" HorizontalAlignment="Left">
-                <controls:SettingCard Glyph="&#xE7B3;" Header="{l:T HotkeyToggleHeader}" Description="{l:T HotkeyToggleDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.Eye}" Header="{l:T HotkeyToggleHeader}" Description="{l:T HotkeyToggleDescription}">
                     <controls:HotkeyBox Label="{l:T HotkeyToggleHeader}" Hotkey="{Binding ToggleHotkey}"
                                         Status="{Binding ToggleHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xE893;" Header="{l:T HotkeyNextHeader}" Description="{l:T HotkeyNextDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.SkipForward}" Header="{l:T HotkeyNextHeader}" Description="{l:T HotkeyNextDescription}">
                     <controls:HotkeyBox Label="{l:T HotkeyNextHeader}" Hotkey="{Binding NextPresetHotkey}"
                                         Status="{Binding NextHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xE892;" Header="{l:T HotkeyPreviousHeader}" Description="{l:T HotkeyPreviousDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.SkipBack}" Header="{l:T HotkeyPreviousHeader}" Description="{l:T HotkeyPreviousDescription}">
                     <controls:HotkeyBox Label="{l:T HotkeyPreviousHeader}" Hotkey="{Binding PreviousPresetHotkey}"
                                         Status="{Binding PreviousHotkeyStatus}" IsCapturing="{Binding IsCapturingHotkey}" />
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xE759;" Header="{l:T PositionHotkeysHeader}" Description="{l:T PositionHotkeysDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.Move}" Header="{l:T PositionHotkeysHeader}" Description="{l:T PositionHotkeysDescription}">
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding PositionHotkeysEnabled}"
                               AutomationProperties.Name="{l:T PositionHotkeysHeader}" />
                     <controls:SettingCard.Body>
@@ -31,7 +31,7 @@
                                    Visibility="{Binding PositionHotkeysStatus, Converter={StaticResource Visible}}" />
                     </controls:SettingCard.Body>
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xEA8F;" Header="{l:T PresetNotificationHeader}" Description="{l:T PresetNotificationDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.Bell}" Header="{l:T PresetNotificationHeader}" Description="{l:T PresetNotificationDescription}">
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding ShowPresetNotifications}"
                               AutomationProperties.Name="{l:T PresetNotificationHeader}" />
                 </controls:SettingCard>

@@ -65,7 +65,7 @@
 
         <DockPanel Margin="0,12,0,0">
             <Border x:Name="Swatch" Width="32" Height="32" CornerRadius="6" BorderThickness="1"
-                    BorderBrush="{StaticResource ControlBorderBrush}" />
+                    BorderBrush="{DynamicResource ControlBorderBrush}" />
             <TextBox x:Name="HexBox" Margin="8,0,0,0" TextAlignment="Center" FontFamily="Cascadia Mono, Consolas"
                      AutomationProperties.Name="{l:T PickerHex}"
                      KeyDown="OnHexKeyDown" LostKeyboardFocus="OnHexLostFocus" />

@@ -44,10 +44,11 @@ Crux ist ein kostenloses, quelloffenes Crosshair-Overlay für Windows. Es legt e
 ### System
 - Mit Windows starten, im Hintergrund starten, in den Infobereich minimieren, beim Schließen weiterlaufen
 - Sprache: Systemsprache, Deutsch oder Englisch, live umschaltbar
+- Farbschema: Hell, Dunkel oder wie Windows, live umschaltbar
 - Sicherung exportieren und wiederherstellen, Konfigurationsordner öffnen, auf Standard zurücksetzen. Die Sicherung enthält die Einstellungen, aber nicht die Bilddateien im Ordner `images`.
 
 ### Oberfläche
-- Eigenes dunkles Design mit eigener Titelleiste, Seitenleiste und Kategorien
+- Eigenes Design mit Titelleiste, Seitenleiste und Kategorien, Schrift Geist und Icons von Lucide
 - Eigene Dialoge, eigener Farbwähler, eigene Benachrichtigungen und eigenes Tray-Menü
 - Ausnahme: Für Export und Import werden die Datei-Dialoge von Windows verwendet
 
@@ -105,7 +106,7 @@ Ein Tag wie `v1.0.0` startet den Release-Workflow. Er testet, baut beide ZIP-Var
 ## Aufbau
 
 - `src/Crux.Core`: Einstellungen, Ebenen-Modell (Fadenkreuz, Form, Text, Bild), Renderer mit Supersampling und Überblenden der Ebenen, Formgeometrie, Spreizen beim Schießen, Farbmathematik, Share-Codes (`CRX3`, `CRX4` und die älteren `NDX1` bis `NDX4`), Import von CS2- und Valorant-Codes, Spielregeln, Hotkey-Konflikte, Konfiguration mit Export/Import und Migration, Übersetzungen. Ohne Windows-Abhängigkeit, getestet. Text und Bilder liefert die App über die Schnittstelle `ILayerContentProvider`.
-- `src/Crux.App`: WPF-Oberfläche (`Views`, `Controls`, `Theme.xaml`), Overlay als natives Win32-Layered-Window, `OverlayController` für Animation, Spreizung und Sichtbarkeit, `WpfLayerContent` für Text und Bilder (inklusive GIF-Animation), Dienste für Bildspeicher, Vordergrundfenster, Maustastenstatus, Updates, Autostart und Benachrichtigungen.
+- `src/Crux.App`: WPF-Oberfläche (`Views`, `Controls`, `Theme.xaml`, Farbpaletten und Icons in `Themes`), Overlay als natives Win32-Layered-Window, `OverlayController` für Animation, Spreizung und Sichtbarkeit, `WpfLayerContent` für Text und Bilder (inklusive GIF-Animation), Dienste für Bildspeicher, Vordergrundfenster, Maustastenstatus, Updates, Autostart und Benachrichtigungen.
 - `tests/Crux.Core.Tests`: xUnit-Tests, inklusive Prüfung, dass jeder in der App verwendete Übersetzungsschlüssel in beiden Sprachen existiert.
 
 ## Mögliche Erweiterungen

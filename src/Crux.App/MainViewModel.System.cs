@@ -39,6 +39,7 @@ internal sealed partial class MainViewModel
     private bool showPresetNotifications;
     private bool checkForUpdates;
     private AppLanguage language;
+    private AppTheme theme;
 
     public ObservableCollection<MonitorOption> Monitors { get; } = [];
 
@@ -267,6 +268,18 @@ internal sealed partial class MainViewModel
             if (SetField(ref language, value))
             {
                 Changed?.Invoke(this, ChangeKind.Language);
+            }
+        }
+    }
+
+    public AppTheme Theme
+    {
+        get => theme;
+        set
+        {
+            if (SetField(ref theme, value))
+            {
+                Changed?.Invoke(this, ChangeKind.Theme);
             }
         }
     }

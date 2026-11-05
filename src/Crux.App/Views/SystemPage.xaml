@@ -11,46 +11,60 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,24">
             <StackPanel MaxWidth="880" HorizontalAlignment="Left">
-                <controls:SettingCard Glyph="&#xE7BA;" Header="{l:T LegacyInstallHeader}" Description="{l:T LegacyInstallDescription}"
+                <controls:SettingCard Icon="{StaticResource Icon.TriangleAlert}" Header="{l:T LegacyInstallHeader}" Description="{l:T LegacyInstallDescription}"
                                       Margin="0,0,0,16" Visibility="{Binding IsLegacyInstallPresent, Converter={StaticResource Visible}}">
                     <Button Content="{l:T OpenInstalledApps}" Click="OnOpenInstalledApps" />
                 </controls:SettingCard>
                 <TextBlock Text="{l:T SectionStartup}" Style="{StaticResource SectionHeader}" Margin="2,0,0,8" />
-                <controls:SettingCard Glyph="&#xE7E8;" Header="{l:T AutostartHeader}" Description="{l:T AutostartDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.Power}" Header="{l:T AutostartHeader}" Description="{l:T AutostartDescription}">
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding StartWithWindows}"
                               AutomationProperties.Name="{l:T AutostartHeader}" />
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xE921;" Header="{l:T StartMinimizedHeader}" Description="{l:T StartMinimizedDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.Minimize}" Header="{l:T StartMinimizedHeader}" Description="{l:T StartMinimizedDescription}">
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding StartMinimized}"
                               AutomationProperties.Name="{l:T StartMinimizedHeader}" />
                 </controls:SettingCard>
 
                 <TextBlock Text="{l:T SectionUpdates}" Style="{StaticResource SectionHeader}" />
-                <controls:SettingCard Glyph="&#xE777;" Header="{l:T UpdateHeader}" Description="{Binding Updates.StatusText}">
+                <controls:SettingCard Icon="{StaticResource Icon.RefreshCw}" Header="{l:T UpdateHeader}" Description="{Binding Updates.StatusText}">
                     <StackPanel Orientation="Horizontal" Visibility="{Binding Updates.IsSupported, Converter={StaticResource Visible}}">
                         <Button Content="{l:T UpdateInstall}" Style="{StaticResource AccentButton}" Margin="0,0,8,0" Click="OnInstallUpdate"
                                 Visibility="{Binding Updates.CanInstall, Converter={StaticResource Visible}}" />
                         <Button Content="{l:T UpdateCheckNow}" Click="OnCheckUpdates" IsEnabled="{Binding Updates.CanCheck}" />
                     </StackPanel>
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xE895;" Header="{l:T AutoUpdateHeader}" Description="{l:T AutoUpdateDescription}"
+                <controls:SettingCard Icon="{StaticResource Icon.Download}" Header="{l:T AutoUpdateHeader}" Description="{l:T AutoUpdateDescription}"
                                       Visibility="{Binding Updates.IsSupported, Converter={StaticResource Visible}}">
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding CheckForUpdates}"
                               AutomationProperties.Name="{l:T AutoUpdateHeader}" />
                 </controls:SettingCard>
 
                 <TextBlock Text="{l:T SectionWindow}" Style="{StaticResource SectionHeader}" />
-                <controls:SettingCard Glyph="&#xE73F;" Header="{l:T MinimizeToTrayHeader}" Description="{l:T MinimizeToTrayDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.Minus}" Header="{l:T MinimizeToTrayHeader}" Description="{l:T MinimizeToTrayDescription}">
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding MinimizeToTray}"
                               AutomationProperties.Name="{l:T MinimizeToTrayHeader}" />
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xE8BB;" Header="{l:T CloseToTrayHeader}" Description="{l:T CloseToTrayDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.SquareX}" Header="{l:T CloseToTrayHeader}" Description="{l:T CloseToTrayDescription}">
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Margin="0" IsChecked="{Binding CloseToTray}"
                               AutomationProperties.Name="{l:T CloseToTrayHeader}" />
                 </controls:SettingCard>
 
+                <TextBlock Text="{l:T SectionAppearance}" Style="{StaticResource SectionHeader}" />
+                <controls:SettingCard Icon="{StaticResource Icon.SunMoon}" Header="{l:T ThemeHeader}" Description="{l:T ThemeDescription}">
+                    <Border Style="{StaticResource SegmentHost}">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Style="{StaticResource SegmentButton}" GroupName="Theme" Content="{l:T ThemeSystem}"
+                                         IsChecked="{Binding Theme, Converter={StaticResource EnumMatch}, ConverterParameter=System}" />
+                            <RadioButton Style="{StaticResource SegmentButton}" GroupName="Theme" Content="{l:T ThemeLight}"
+                                         IsChecked="{Binding Theme, Converter={StaticResource EnumMatch}, ConverterParameter=Light}" />
+                            <RadioButton Style="{StaticResource SegmentButton}" GroupName="Theme" Content="{l:T ThemeDark}"
+                                         IsChecked="{Binding Theme, Converter={StaticResource EnumMatch}, ConverterParameter=Dark}" />
+                        </StackPanel>
+                    </Border>
+                </controls:SettingCard>
+
                 <TextBlock Text="{l:T SectionLanguage}" Style="{StaticResource SectionHeader}" />
-                <controls:SettingCard Glyph="&#xF2B7;" Header="{l:T LanguageHeader}" Description="{l:T LanguageDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.Languages}" Header="{l:T LanguageHeader}" Description="{l:T LanguageDescription}">
                     <Border Style="{StaticResource SegmentHost}">
                         <StackPanel Orientation="Horizontal">
                             <RadioButton Style="{StaticResource SegmentButton}" GroupName="Language" Content="{l:T LanguageSystem}"
@@ -64,16 +78,16 @@
                 </controls:SettingCard>
 
                 <TextBlock Text="{l:T SectionData}" Style="{StaticResource SectionHeader}" />
-                <controls:SettingCard Glyph="&#xE74E;" Header="{l:T BackupHeader}" Description="{l:T BackupDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.Save}" Header="{l:T BackupHeader}" Description="{l:T BackupDescription}">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="{l:T Export}" Click="OnExport" Margin="0,0,8,0" />
                         <Button Content="{l:T ImportFile}" Click="OnImport" />
                     </StackPanel>
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xE838;" Header="{l:T ConfigFolderHeader}" Description="{Binding ConfigFilePath}">
+                <controls:SettingCard Icon="{StaticResource Icon.FolderOpen}" Header="{l:T ConfigFolderHeader}" Description="{Binding ConfigFilePath}">
                     <Button Content="{l:T OpenFolder}" Click="OnOpenFolder" />
                 </controls:SettingCard>
-                <controls:SettingCard Glyph="&#xE72C;" Header="{l:T ResetHeader}" Description="{l:T ResetDescription}">
+                <controls:SettingCard Icon="{StaticResource Icon.RotateCcw}" Header="{l:T ResetHeader}" Description="{l:T ResetDescription}">
                     <Button Content="{l:T Reset}" Style="{StaticResource DangerButton}" Click="OnReset" />
                 </controls:SettingCard>
                 <TextBlock x:Name="StatusText" Style="{StaticResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="2,8,0,0" />

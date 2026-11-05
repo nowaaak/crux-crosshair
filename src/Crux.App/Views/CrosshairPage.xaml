@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:app="clr-namespace:Crux.App"
+             xmlns:controls="clr-namespace:Crux.App.Controls"
              xmlns:core="clr-namespace:Crux.Core;assembly=Crux.Core"
              xmlns:l="clr-namespace:Crux.App.Localization">
     <Grid>
@@ -307,7 +308,7 @@
             <StackPanel Margin="0,8,0,0">
                 <GroupBox Header="{l:T CardPreview}">
                     <StackPanel>
-                        <Border Height="260" CornerRadius="6" BorderBrush="{StaticResource CardBorderBrush}" BorderThickness="1">
+                        <Border Height="260" CornerRadius="10" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="Background" Value="#FF16191D" />
@@ -347,7 +348,7 @@
                                        RenderOptions.BitmapScalingMode="NearestNeighbor"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
-                                <Border Background="#CC1C1C1C" CornerRadius="6" Padding="14,10" MaxWidth="260"
+                                <Border Background="{DynamicResource PreviewOverlayBrush}" CornerRadius="10" Padding="14,10" MaxWidth="260"
                                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                         Visibility="{Binding IsCrosshairEmpty, Converter={StaticResource Visible}}">
                                     <StackPanel>
@@ -387,13 +388,13 @@
                     <GroupBox.Header>
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                <Button Style="{StaticResource IconButton}" Content="&#xE710;" Click="OnAddLayer" IsEnabled="{Binding CanAddLayer}"
+                                <Button Style="{StaticResource IconButton}" Content="{StaticResource Icon.Plus}" Click="OnAddLayer" IsEnabled="{Binding CanAddLayer}"
                                         ToolTip="{l:T LayerAdd}" AutomationProperties.Name="{l:T LayerAdd}" />
-                                <Button Style="{StaticResource IconButton}" Content="&#xE74A;" Click="OnLayerForward" IsEnabled="{Binding CanMoveLayerForward}"
+                                <Button Style="{StaticResource IconButton}" Content="{StaticResource Icon.ArrowUp}" Click="OnLayerForward" IsEnabled="{Binding CanMoveLayerForward}"
                                         ToolTip="{l:T LayerForward}" AutomationProperties.Name="{l:T LayerForward}" />
-                                <Button Style="{StaticResource IconButton}" Content="&#xE74B;" Click="OnLayerBackward" IsEnabled="{Binding CanMoveLayerBackward}"
+                                <Button Style="{StaticResource IconButton}" Content="{StaticResource Icon.ArrowDown}" Click="OnLayerBackward" IsEnabled="{Binding CanMoveLayerBackward}"
                                         ToolTip="{l:T LayerBackward}" AutomationProperties.Name="{l:T LayerBackward}" />
-                                <Button Style="{StaticResource IconButton}" Content="&#xE74D;" Click="OnRemoveLayer" IsEnabled="{Binding CanRemoveLayer}"
+                                <Button Style="{StaticResource IconButton}" Content="{StaticResource Icon.Trash}" Click="OnRemoveLayer" IsEnabled="{Binding CanRemoveLayer}"
                                         ToolTip="{l:T LayerRemove}" AutomationProperties.Name="{l:T LayerRemove}" />
                             </StackPanel>
                             <TextBlock Text="{l:T CardLayers}" VerticalAlignment="Center" />
@@ -412,8 +413,24 @@
                                     <DockPanel>
                                         <CheckBox DockPanel.Dock="Right" Style="{StaticResource EyeToggle}" IsChecked="{Binding Visible}"
                                                   ToolTip="{l:T LayerVisible}" AutomationProperties.Name="{l:T LayerVisible}" />
-                                        <TextBlock DockPanel.Dock="Left" Text="{Binding Glyph}" FontFamily="{StaticResource IconFont}" FontSize="14"
-                                                   Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center" Margin="2,0,10,0" />
+                                        <controls:IconElement DockPanel.Dock="Left" Foreground="{DynamicResource AccentBrush}" Margin="2,0,10,0">
+                                            <controls:IconElement.Style>
+                                                <Style TargetType="controls:IconElement">
+                                                    <Setter Property="Data" Value="{StaticResource Icon.Crosshair}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Kind}" Value="Shape">
+                                                            <Setter Property="Data" Value="{StaticResource Icon.Shapes}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Kind}" Value="Text">
+                                                            <Setter Property="Data" Value="{StaticResource Icon.Type}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Kind}" Value="Image">
+                                                            <Setter Property="Data" Value="{StaticResource Icon.Image}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </controls:IconElement.Style>
+                                        </controls:IconElement>
                                         <StackPanel VerticalAlignment="Center">
                                             <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
                                             <TextBlock Text="{Binding Subtitle}" Style="{StaticResource SecondaryText}" FontSize="11" />

@@ -18,15 +18,15 @@
         <Button x:Name="SwatchButton" Width="36" Height="32" Padding="0" Cursor="Hand"
                 Click="OnOpenPicker" ToolTip="{l:T PickerOpen}" AutomationProperties.Name="{Binding Label}">
             <Border Width="24" Height="20" CornerRadius="4" Background="{Binding Hex}"
-                    BorderBrush="#40FFFFFF" BorderThickness="1" />
+                    BorderBrush="{DynamicResource SwatchBorderBrush}" BorderThickness="1" />
         </Button>
         <TextBox Width="96" Margin="8,0" Text="{Binding Hex, UpdateSourceTrigger=LostFocus}"
                  TextAlignment="Center" FontFamily="Cascadia Mono, Consolas" KeyDown="OnHexKeyDown"
                  HorizontalAlignment="Left" AutomationProperties.Name="{Binding Label}" />
         <Popup x:Name="PickerPopup" PlacementTarget="{Binding ElementName=SwatchButton}" Placement="Bottom"
                VerticalOffset="6" StaysOpen="False" AllowsTransparency="True" PopupAnimation="None">
-            <Border Background="{StaticResource PopupBrush}" BorderBrush="{StaticResource ControlBorderBrush}"
-                    BorderThickness="1" CornerRadius="10" Padding="12">
+            <Border Background="{DynamicResource PopupBrush}" BorderBrush="{DynamicResource ControlBorderBrush}"
+                    BorderThickness="1" CornerRadius="14" Padding="12">
                 <StackPanel>
                     <controls:ColorPicker Hex="{Binding Hex}" />
                     <ItemsControl ItemsSource="{Binding Swatches}" Margin="0,12,0,0" Focusable="False">

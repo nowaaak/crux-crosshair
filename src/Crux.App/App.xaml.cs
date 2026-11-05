@@ -18,6 +18,8 @@ public partial class App : Application
     {
         base.OnStartup(e);
         Resources["AppDisplayName"] = AppIdentity.DisplayName;
+        Resources["ProductName"] = AppIdentity.ProductName;
+        Resources["DevBadgeVisibility"] = AppIdentity.IsDevBuild ? Visibility.Visible : Visibility.Collapsed;
         Resources["LogoBrush"] = new LinearGradientBrush(AppIdentity.LogoGradientStart, AppIdentity.LogoGradientEnd, new Point(0, 0), new Point(1, 1));
 
         instanceMutex = new Mutex(true, AppIdentity.InstanceMutexName, out var isFirstInstance);

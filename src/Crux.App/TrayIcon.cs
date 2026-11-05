@@ -2,6 +2,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
+using System.Windows.Media;
+using Crux.App.Controls;
 using Crux.App.Localization;
 using Crux.App.Native;
 using Drawing = System.Drawing;
@@ -11,9 +13,9 @@ namespace Crux.App;
 
 internal sealed class TrayIcon : IDisposable
 {
-    private const string SettingsGlyph = "";
-    private const string ExitGlyph = "";
-    private const string PresetGlyph = "";
+    private const string SettingsIcon = "Icon.Settings";
+    private const string ExitIcon = "Icon.Power";
+    private const string PresetIcon = "Icon.Bookmark";
 
     private readonly Forms.NotifyIcon notifyIcon;
     private readonly Drawing.Icon icon;
@@ -27,10 +29,10 @@ internal sealed class TrayIcon : IDisposable
     {
         icon = LoadIcon();
 
-        settingsItem = CreateItem(SettingsGlyph, () => OpenSettingsRequested?.Invoke(this, EventArgs.Empty));
+        settingsItem = CreateItem(SettingsIcon, () => OpenSettingsRequested?.Invoke(this, EventArgs.Empty));
         toggleItem = CreateItem(null, () => ToggleRequested?.Invoke(this, EventArgs.Empty));
-        presetsItem = CreateItem(PresetGlyph, null);
-        exitItem = CreateItem(ExitGlyph, () => ExitRequested?.Invoke(this, EventArgs.Empty));
+        presetsItem = CreateItem(PresetIcon, null);
+        exitItem = CreateItem(ExitIcon, () => ExitRequested?.Invoke(this, EventArgs.Empty));
         menu = new ContextMenu
         {
             Placement = PlacementMode.MousePoint,
@@ -91,12 +93,12 @@ internal sealed class TrayIcon : IDisposable
         return new Drawing.Icon(stream, Forms.SystemInformation.SmallIconSize);
     }
 
-    private static MenuItem CreateItem(string? glyph, Action? onClick)
+    private static MenuItem CreateItem(string? iconKey, Action? onClick)
     {
         var item = new MenuItem();
-        if (glyph is not null)
+        if (iconKey is not null)
         {
-            item.Icon = new TextBlock { Text = glyph, Style = (Style)Application.Current.FindResource("MenuGlyph") };
+            item.Icon = new IconElement { Data = (Geometry)Application.Current.FindResource(iconKey) };
         }
 
         if (onClick is not null)

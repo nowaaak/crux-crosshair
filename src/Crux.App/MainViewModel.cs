@@ -19,7 +19,8 @@ internal enum ChangeKind
     System = 8,
     Autostart = 16,
     Language = 32,
-    All = Overlay | Hotkey | Presets | System | Language,
+    Theme = 64,
+    All = Overlay | Hotkey | Presets | System | Language | Theme,
 }
 
 internal enum AppPage
@@ -459,6 +460,7 @@ internal sealed partial class MainViewModel : INotifyPropertyChanged
         ShowPresetNotifications = showPresetNotifications,
         CheckForUpdates = checkForUpdates,
         Language = language,
+        Theme = theme,
     }.Normalize();
 
     public void ApplyConfig(AppConfig config)
@@ -517,6 +519,7 @@ internal sealed partial class MainViewModel : INotifyPropertyChanged
         showPresetNotifications = config.ShowPresetNotifications;
         checkForUpdates = config.CheckForUpdates;
         language = config.Language;
+        theme = config.Theme;
     }
 
     private void InsertPreset(PresetItem item)

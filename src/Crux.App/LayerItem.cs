@@ -3,12 +3,20 @@ using System.Runtime.CompilerServices;
 
 namespace Crux.App;
 
+internal enum LayerKind
+{
+    Classic,
+    Shape,
+    Text,
+    Image,
+}
+
 internal sealed class LayerItem : INotifyPropertyChanged
 {
     private readonly Action<LayerItem, bool> visibilityChanged;
     private string title = string.Empty;
     private string subtitle = string.Empty;
-    private string glyph = string.Empty;
+    private LayerKind kind;
     private bool visible;
 
     public LayerItem(Action<LayerItem, bool> visibilityChanged)
@@ -32,10 +40,10 @@ internal sealed class LayerItem : INotifyPropertyChanged
         set => SetField(ref subtitle, value);
     }
 
-    public string Glyph
+    public LayerKind Kind
     {
-        get => glyph;
-        set => SetField(ref glyph, value);
+        get => kind;
+        set => SetField(ref kind, value);
     }
 
     public bool Visible

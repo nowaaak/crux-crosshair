@@ -6,11 +6,6 @@ namespace Crux.App;
 
 internal sealed partial class MainViewModel
 {
-    private static readonly string ClassicGlyph = char.ConvertFromUtf32(0xE710);
-    private static readonly string ShapeGlyph = char.ConvertFromUtf32(0xF158);
-    private static readonly string TextGlyph = char.ConvertFromUtf32(0xE8D2);
-    private static readonly string ImageGlyph = char.ConvertFromUtf32(0xE91B);
-
     private int selectedLayerIndex;
     private bool syncingLayers;
 
@@ -246,7 +241,7 @@ internal sealed partial class MainViewModel
                 item.DesignIndex = designIndex;
                 item.Title = LayerTitle(layer);
                 item.Subtitle = Loc.Format("LayerNumber", designIndex + 1);
-                item.Glyph = LayerGlyph(layer);
+                item.Kind = KindOf(layer);
                 item.SetVisibleSilently(layer.Visible);
             }
         }
@@ -275,11 +270,11 @@ internal sealed partial class MainViewModel
         _ => Loc.T("ShapeTriangle"),
     };
 
-    private static string LayerGlyph(CrosshairLayer layer) => layer switch
+    private static LayerKind KindOf(CrosshairLayer layer) => layer switch
     {
-        ShapeLayer => ShapeGlyph,
-        TextLayer => TextGlyph,
-        ImageLayer => ImageGlyph,
-        _ => ClassicGlyph,
+        ShapeLayer => LayerKind.Shape,
+        TextLayer => LayerKind.Text,
+        ImageLayer => LayerKind.Image,
+        _ => LayerKind.Classic,
     };
 }

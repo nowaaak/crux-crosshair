@@ -44,10 +44,11 @@ Crux is a free, open source crosshair overlay for Windows. It draws a fully cust
 ### System
 - Start with Windows, start in background, minimize to the notification area, keep running when closed
 - Language: system default, German or English, switchable at runtime
+- Color scheme: light, dark or same as Windows, switchable at runtime
 - Export and restore backups, open the configuration folder, reset to defaults. Backups contain the settings but not the image files in the `images` folder.
 
 ### Interface
-- Custom dark design with its own title bar, sidebar and categories
+- Own design with title bar, sidebar and categories, Geist font and Lucide icons
 - Custom dialogs, color picker, notifications and tray menu
 - Exception: export and import use the standard Windows file dialogs
 
@@ -105,7 +106,7 @@ Pushing a tag like `v1.0.0` runs the release workflow. It tests, builds both ZIP
 ## Project structure
 
 - `src/Crux.Core`: settings, layer model (crosshair, shape, text, image), renderer with supersampling and layer blending, shape geometry, fire spread, color math, share codes (`CRX3`, `CRX4` and the older `NDX1` to `NDX4`), CS2 and Valorant code import, game rules, hotkey conflicts, configuration with export, import and migration, translations. No Windows dependencies, covered by tests. The app supplies text and images through the `ILayerContentProvider` interface.
-- `src/Crux.App`: WPF interface (`Views`, `Controls`, `Theme.xaml`), the overlay as a native Win32 layered window, `OverlayController` for animation, spread and visibility, `WpfLayerContent` for text and images (including GIF animation), and services for the image store, foreground detection, mouse button state, updates, autostart and notifications.
+- `src/Crux.App`: WPF interface (`Views`, `Controls`, `Theme.xaml`, color palettes and icons in `Themes`), the overlay as a native Win32 layered window, `OverlayController` for animation, spread and visibility, `WpfLayerContent` for text and images (including GIF animation), and services for the image store, foreground detection, mouse button state, updates, autostart and notifications.
 - `tests/Crux.Core.Tests`: xUnit tests, including a check that every translation key used in the app exists in both languages.
 
 ## Roadmap ideas

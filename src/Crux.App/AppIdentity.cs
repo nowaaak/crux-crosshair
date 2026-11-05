@@ -9,6 +9,7 @@ internal static class AppIdentity
     public const string Id = "CruxCrosshair.Dev";
     public const string LegacyId = "NdCrosshair.Dev";
     public const string DisplayName = "Crux Dev";
+    public const bool IsDevBuild = true;
     public const string IconFile = "app-dev.ico";
     public static readonly Color LogoGradientStart = Color.FromRgb(74, 222, 128);
     public static readonly Color LogoGradientEnd = Color.FromRgb(21, 128, 61);
@@ -16,11 +17,13 @@ internal static class AppIdentity
     public const string Id = "CruxCrosshair";
     public const string LegacyId = "NdCrosshair";
     public const string DisplayName = "Crux";
+    public const bool IsDevBuild = false;
     public const string IconFile = "app.ico";
     public static readonly Color LogoGradientStart = Color.FromRgb(96, 205, 255);
     public static readonly Color LogoGradientEnd = Color.FromRgb(37, 99, 235);
 #endif
 
+    public const string ProductName = "Crux";
 
     public const string InstanceMutexName = @"Local\" + Id + ".Instance";
     public const string ShowSettingsEventName = @"Local\" + Id + ".ShowSettings";
