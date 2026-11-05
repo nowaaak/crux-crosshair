@@ -133,6 +133,7 @@ public sealed class ConfigStoreTests : IDisposable
             ShowPresetNotifications = false,
             CheckForUpdates = false,
             Language = AppLanguage.English,
+            Theme = AppTheme.Light,
             NextPresetHotkey = new HotkeyBinding(HotkeyBinding.ModifierAlt, 0x78),
             PreviousPresetHotkey = new HotkeyBinding(0, 0x77),
         };
@@ -184,6 +185,33 @@ public sealed class ConfigStoreTests : IDisposable
 
         store.Save(config);
         Assert.DoesNotContain("gameWindowTitles", File.ReadAllText(FilePath), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Load_WithoutTheme_UsesDark()
+    {
+        Directory.CreateDirectory(directory);
+        File.WriteAllText(FilePath, "{}");
+
+        Assert.Equal(AppTheme.Dark, new ConfigStore(FilePath).Load().Config.Theme);
+    }
+
+    [Fact]
+    public void Normalize_ReplacesUndefinedThemeWithDark()
+    {
+        var config = new AppConfig { Theme = (AppTheme)42 }.Normalize();
+
+        Assert.Equal(AppTheme.Dark, config.Theme);
+    }
+
+    [Fact]
+    public void SaveAndLoad_RoundTripsSystemTheme()
+    {
+        var store = new ConfigStore(FilePath);
+        store.Save(new AppConfig { Theme = AppTheme.System });
+
+        Assert.Equal(AppTheme.System, store.Load().Config.Theme);
+        Assert.Contains("\"theme\": \"System\"", File.ReadAllText(FilePath), StringComparison.Ordinal);
     }
 
     [Fact]

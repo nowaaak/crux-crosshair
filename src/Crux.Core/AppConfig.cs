@@ -78,6 +78,13 @@ public enum AppLanguage
     English,
 }
 
+public enum AppTheme
+{
+    System,
+    Light,
+    Dark,
+}
+
 public sealed record AppConfig
 {
     public const int MaxOffset = 500;
@@ -129,6 +136,8 @@ public sealed record AppConfig
 
     public AppLanguage Language { get; init; }
 
+    public AppTheme Theme { get; init; } = AppTheme.Dark;
+
     public AppConfig Normalize()
     {
         var presets = new List<Preset>();
@@ -165,6 +174,7 @@ public sealed record AppConfig
             AimHideButton = Enum.IsDefined(AimHideButton) ? AimHideButton : AimButton.None,
             AimHideMode = Enum.IsDefined(AimHideMode) ? AimHideMode : AimHideMode.Hold,
             Language = Enum.IsDefined(Language) ? Language : AppLanguage.System,
+            Theme = Enum.IsDefined(Theme) ? Theme : AppTheme.Dark,
         };
     }
 
