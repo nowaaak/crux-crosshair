@@ -34,7 +34,7 @@ jobs:
 
       - name: Publish portable build
         run: >
-          dotnet publish src/NdCrosshair.App -c Release -r win-x64
+          dotnet publish src/Crux.App -c Release -r win-x64
           --self-contained true
           -p:PublishSingleFile=true
           -p:IncludeNativeLibrariesForSelfExtract=true
@@ -45,7 +45,7 @@ jobs:
 
       - name: Publish framework-dependent build
         run: >
-          dotnet publish src/NdCrosshair.App -c Release -r win-x64
+          dotnet publish src/Crux.App -c Release -r win-x64
           --self-contained false
           -p:PublishSingleFile=true
           -p:DebugType=none
@@ -54,7 +54,7 @@ jobs:
 
       - name: Publish installer build
         run: >
-          dotnet publish src/NdCrosshair.App -c Release -r win-x64
+          dotnet publish src/Crux.App -c Release -r win-x64
           --self-contained true
           -p:DebugType=none
           -p:Version=${{ steps.version.outputs.value }}
@@ -69,19 +69,21 @@ jobs:
           dotnet vpk download github
           --repoUrl ${{ github.server_url }}/${{ github.repository }}
           --token ${{ github.token }}
+          --channel win-x64
           --outputDir velopack
 
       - name: Build installer and update packages
         run: >
           dotnet vpk pack
-          --packId NdCrosshair
+          --packId CruxCrosshair
           --packVersion ${{ steps.version.outputs.value }}
           --packDir artifacts/installer
           --runtime win-x64
-          --mainExe NdCrosshair.exe
-          --packTitle "ND Crosshair"
+          --mainExe Crux.exe
+          --packTitle "Crux"
           --packAuthors nowaaak
-          --icon src/NdCrosshair.App/Assets/app.ico
+          --icon src/Crux.App/Assets/app.ico
+          --channel win-x64
           --outputDir velopack
 
       - name: Package
@@ -89,14 +91,14 @@ jobs:
         run: |
           $version = '${{ steps.version.outputs.value }}'
           New-Item -ItemType Directory -Force dist | Out-Null
-          Compress-Archive -Path artifacts/portable/NdCrosshair.exe, LICENSE -DestinationPath "dist/NdCrosshair-$version-win-x64-portable.zip"
-          Compress-Archive -Path artifacts/framework-dependent/NdCrosshair.exe, LICENSE -DestinationPath "dist/NdCrosshair-$version-win-x64-requires-dotnet10.zip"
+          Compress-Archive -Path artifacts/portable/Crux.exe, LICENSE -DestinationPath "dist/CruxCrosshair-$version-win-x64-portable.zip"
+          Compress-Archive -Path artifacts/framework-dependent/Crux.exe, LICENSE -DestinationPath "dist/CruxCrosshair-$version-win-x64-requires-dotnet10.zip"
           Get-FileHash dist/*.zip -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $(Split-Path $_.Path -Leaf)" } | Set-Content dist/SHA256SUMS.txt
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: NdCrosshair-${{ steps.version.outputs.value }}
+          name: CruxCrosshair-${{ steps.version.outputs.value }}
           path: |
             dist/*
             velopack/*
@@ -106,7 +108,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         shell: pwsh
-        run: gh release create $env:GITHUB_REF_NAME dist/* --title "ND Crosshair $env:GITHUB_REF_NAME" --generate-notes
+        run: gh release create $env:GITHUB_REF_NAME dist/* --title "Crux $env:GITHUB_REF_NAME" --generate-notes
 
       - name: Upload installer and update packages
         if: github.ref_type == 'tag'
@@ -115,6 +117,7 @@ jobs:
           --repoUrl ${{ github.server_url }}/${{ github.repository }}
           --token ${{ github.token }}
           --outputDir velopack
+          --channel win-x64
           --tag ${{ github.ref_name }}
           --merge
           --publish

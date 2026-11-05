@@ -1,10 +1,10 @@
 # Contributing
 
-Thanks for your interest in ND Crosshair.
+Thanks for your interest in Crux.
 
 ## Issues and feature requests
 
-Bug reports and feature ideas are very welcome. Please use the [issue templates](https://github.com/nowaaak/nd-crosshair/issues/new/choose). English or German are both fine.
+Bug reports and feature ideas are very welcome. Please use the [issue templates](https://github.com/nowaaak/crux-crosshair/issues/new/choose). English or German are both fine.
 
 ## Pull requests
 
@@ -16,11 +16,11 @@ You are free to fork the project under the terms of the [MIT License](LICENSE).
 
 # Mitwirken
 
-Danke für dein Interesse an ND Crosshair.
+Danke für dein Interesse an Crux.
 
 ## Fehler und Wünsche
 
-Fehlermeldungen und Ideen sind sehr willkommen. Bitte nutze die [Issue-Vorlagen](https://github.com/nowaaak/nd-crosshair/issues/new/choose). Deutsch oder Englisch sind beide in Ordnung.
+Fehlermeldungen und Ideen sind sehr willkommen. Bitte nutze die [Issue-Vorlagen](https://github.com/nowaaak/crux-crosshair/issues/new/choose). Deutsch oder Englisch sind beide in Ordnung.
 
 ## Pull Requests
 

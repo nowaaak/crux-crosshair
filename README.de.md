@@ -1,8 +1,10 @@
-# ND Crosshair
+<img src="docs/logo.png" alt="" width="96" height="96">
+
+# Crux
 
 [English](README.md) · **Deutsch**
 
-Kostenloses, quelloffenes Crosshair-Overlay für Windows. Es legt ein frei gestaltbares Fadenkreuz über jedes Spiel im Fenster- oder Fenster-Vollbildmodus.
+Crux ist ein kostenloses, quelloffenes Crosshair-Overlay für Windows. Es legt ein frei gestaltbares Fadenkreuz über jedes Spiel im Fenster- oder Fenster-Vollbildmodus.
 
 ## Funktionen
 
@@ -23,7 +25,7 @@ Kostenloses, quelloffenes Crosshair-Overlay für Windows. Es legt ein frei gesta
 
 ### Presets
 - Beliebig viele Presets mit Vorschaubild, optional mit eigenem Hotkey
-- Share-Codes zum Teilen und Importieren: Einfache Fadenkreuze bekommen weiter einen kurzen `NDX3-`-Code, Designs mit Ebenen, mehr Armen oder Spreizung einen `NDX4-`-Code. Bild-Ebenen sind in Codes nicht enthalten. Ältere `NDX1-` und `NDX2-`-Codes werden weiterhin gelesen.
+- Share-Codes zum Teilen und Importieren: Einfache Fadenkreuze bekommen einen kurzen `CRX3-`-Code, Designs mit Ebenen, mehr Armen oder Spreizung einen `CRX4-`-Code. Bild-Ebenen sind in Codes nicht enthalten. Codes aus ND Crosshair (`NDX1-` bis `NDX4-`) werden weiterhin gelesen.
 - **Import von Spiel-Codes**: CS2-Codes (`CSGO-...`, aktuelles Pixel-Format seit dem Update im September 2026) und Valorant-Codes (`0;P;...`). Was sich nicht exakt abbilden lässt (zum Beispiel äußere Linien oder dynamische Streuung), meldet die App nach dem Import. CS2-Codes werden auf die Höhe des gewählten Monitors skaliert. Alte CS2-Codes im Einheiten-Format werden abgelehnt, weil CS2 sie selbst nicht mehr annimmt.
 
 ### Overlay
@@ -51,15 +53,19 @@ Kostenloses, quelloffenes Crosshair-Overlay für Windows. Es legt ein frei gesta
 
 ## Download
 
-Fertige Versionen gibt es unter [Releases](https://github.com/nowaaak/nd-crosshair/releases):
+Fertige Versionen gibt es unter [Releases](https://github.com/nowaaak/crux-crosshair/releases):
 
-- **Empfohlen:** `NdCrosshair-win-Setup.exe` installiert die App für deinen Benutzer, ohne Admin-Rechte, mit Startmenü- und Desktop-Verknüpfung. Updates lassen sich direkt in der App unter **System** installieren. Deinstallieren geht über die Windows-Einstellungen.
-- `NdCrosshair-<Version>-win-x64-portable.zip`: läuft ohne Installation, enthält .NET (etwa 70 MB), ohne Updates in der App
-- `NdCrosshair-<Version>-win-x64-requires-dotnet10.zip`: deutlich kleiner, braucht die [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0), ohne Updates in der App
+- **Empfohlen:** `CruxCrosshair-win-x64-Setup.exe` installiert die App für deinen Benutzer, ohne Admin-Rechte, mit Startmenü- und Desktop-Verknüpfung. Updates lassen sich direkt in der App unter **System** installieren. Deinstallieren geht über die Windows-Einstellungen.
+- `CruxCrosshair-<Version>-win-x64-portable.zip`: läuft ohne Installation, enthält .NET (etwa 70 MB), ohne Updates in der App
+- `CruxCrosshair-<Version>-win-x64-requires-dotnet10.zip`: deutlich kleiner, braucht die [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0), ohne Updates in der App
 
 Die Dateien sind nicht signiert, deshalb kann Windows SmartScreen beim ersten Start warnen ("Weitere Informationen", dann "Trotzdem ausführen").
 
 Die installierte Version prüft beim Start und alle 12 Stunden bei GitHub, ob es eine neue Version gibt. Das lässt sich unter **System** abschalten. Installiert wird ein Update nur, wenn du es bestätigst.
+
+## Früher ND Crosshair
+
+Crux hieß bis Version 1.2 ND Crosshair. Die alte Version aktualisiert sich nicht von selbst auf Crux, deshalb Crux einmal von Hand installieren. Beim ersten Start kopiert Crux die Einstellungen und Bilder aus `%APPDATA%\NdCrosshair` (der alte Ordner bleibt unverändert) und übernimmt den Eintrag "Mit Windows starten". Solange ND Crosshair noch installiert ist, zeigt die Seite **System** einen Hinweis mit Link zum Deinstallieren.
 
 ## Voraussetzungen
 
@@ -70,21 +76,21 @@ Die installierte Version prüft beim Start und alle 12 Stunden bei GitHub, ob es
 
 ```powershell
 dotnet test
-dotnet publish src/NdCrosshair.App -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o publish
-.\publish\NdCrosshair.exe
+dotnet publish src/Crux.App -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o publish
+.\publish\Crux.exe
 ```
 
 Beim ersten Start öffnen sich die Einstellungen. Danach startet die App standardmäßig im Hintergrund. Ein Doppelklick auf das Tray-Icon oder ein erneuter Start der EXE öffnet die Einstellungen. Beenden über das Tray-Menü.
 
 Autostart trägt den Pfad der gerade laufenden EXE in `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` ein. Die installierte Version stellt einen vorhandenen Eintrag beim Start automatisch auf sich um.
 
-Die Konfiguration liegt unter `%APPDATA%\NdCrosshair\config.json`. Eine beschädigte Datei wird beim Start als `config.json.corrupt-<Zeitstempel>` gesichert und durch Standardwerte ersetzt. Ist die Datei gesperrt oder nicht lesbar, startet die App mit Standardwerten und speichert in dieser Sitzung nichts, damit die Datei unverändert bleibt.
+Die Konfiguration liegt unter `%APPDATA%\CruxCrosshair\config.json`. Eine beschädigte Datei wird beim Start als `config.json.corrupt-<Zeitstempel>` gesichert und durch Standardwerte ersetzt. Ist die Datei gesperrt oder nicht lesbar, startet die App mit Standardwerten und speichert in dieser Sitzung nichts, damit die Datei unverändert bleibt.
 
-Debug-Builds sind davon getrennt: Sie heißen "ND Crosshair Dev", speichern unter `%APPDATA%\NdCrosshair.Dev\config.json`, nutzen einen eigenen Autostart-Eintrag und laufen parallel zur installierten App.
+Debug-Builds sind davon getrennt: Sie heißen "Crux Dev", speichern unter `%APPDATA%\CruxCrosshair.Dev\config.json`, nutzen einen eigenen Autostart-Eintrag und laufen parallel zur installierten App.
 
 ## Release erstellen
 
-Ein Tag wie `v1.0.0` startet den Release-Workflow. Er testet, baut beide ZIP-Varianten mit SHA-256-Prüfsummen, baut Installer und Update-Pakete mit [Velopack](https://github.com/velopack/velopack) (`vpk`, fest eingetragen in `.config/dotnet-tools.json`) und veröffentlicht alles als ein GitHub-Release. Installierte Apps holen sich die neue Version von dort. Manuell gestartet erzeugt derselbe Workflow nur Test-Builds als Artefakte, ohne Release.
+Ein Tag wie `v1.0.0` startet den Release-Workflow. Er testet, baut beide ZIP-Varianten mit SHA-256-Prüfsummen, baut Installer und Update-Pakete mit [Velopack](https://github.com/velopack/velopack) (`vpk`, fest eingetragen in `.config/dotnet-tools.json`) und veröffentlicht alles als ein GitHub-Release. Installierte Apps holen sich die neue Version von dort. Die Pakete nutzen den Velopack-Kanal `win-x64`. Installationen von ND Crosshair nutzen den Standardkanal `win` und sehen Crux-Pakete deshalb nie als Update. Manuell gestartet erzeugt derselbe Workflow nur Test-Builds als Artefakte, ohne Release.
 
 ## Fortnite und Anti-Cheat
 
@@ -98,9 +104,9 @@ Ein Tag wie `v1.0.0` startet den Release-Workflow. Er testet, baut beide ZIP-Var
 
 ## Aufbau
 
-- `src/NdCrosshair.Core`: Einstellungen, Ebenen-Modell (Fadenkreuz, Form, Text, Bild), Renderer mit Supersampling und Überblenden der Ebenen, Formgeometrie, Spreizen beim Schießen, Farbmathematik, Share-Codes (`NDX1` bis `NDX4`), Import von CS2- und Valorant-Codes, Spielregeln, Hotkey-Konflikte, Konfiguration mit Export/Import und Migration, Übersetzungen. Ohne Windows-Abhängigkeit, getestet. Text und Bilder liefert die App über die Schnittstelle `ILayerContentProvider`.
-- `src/NdCrosshair.App`: WPF-Oberfläche (`Views`, `Controls`, `Theme.xaml`), Overlay als natives Win32-Layered-Window, `OverlayController` für Animation, Spreizung und Sichtbarkeit, `WpfLayerContent` für Text und Bilder (inklusive GIF-Animation), Dienste für Bildspeicher, Vordergrundfenster, Maustastenstatus, Updates, Autostart und Benachrichtigungen.
-- `tests/NdCrosshair.Core.Tests`: xUnit-Tests, inklusive Prüfung, dass jeder in der App verwendete Übersetzungsschlüssel in beiden Sprachen existiert.
+- `src/Crux.Core`: Einstellungen, Ebenen-Modell (Fadenkreuz, Form, Text, Bild), Renderer mit Supersampling und Überblenden der Ebenen, Formgeometrie, Spreizen beim Schießen, Farbmathematik, Share-Codes (`CRX3`, `CRX4` und die älteren `NDX1` bis `NDX4`), Import von CS2- und Valorant-Codes, Spielregeln, Hotkey-Konflikte, Konfiguration mit Export/Import und Migration, Übersetzungen. Ohne Windows-Abhängigkeit, getestet. Text und Bilder liefert die App über die Schnittstelle `ILayerContentProvider`.
+- `src/Crux.App`: WPF-Oberfläche (`Views`, `Controls`, `Theme.xaml`), Overlay als natives Win32-Layered-Window, `OverlayController` für Animation, Spreizung und Sichtbarkeit, `WpfLayerContent` für Text und Bilder (inklusive GIF-Animation), Dienste für Bildspeicher, Vordergrundfenster, Maustastenstatus, Updates, Autostart und Benachrichtigungen.
+- `tests/Crux.Core.Tests`: xUnit-Tests, inklusive Prüfung, dass jeder in der App verwendete Übersetzungsschlüssel in beiden Sprachen existiert.
 
 ## Mögliche Erweiterungen
 
@@ -110,7 +116,7 @@ Ein Tag wie `v1.0.0` startet den Release-Workflow. Er testet, baut beide ZIP-Var
 
 ## Feedback
 
-Fehler gefunden oder eine Idee? Eröffne ein [Issue](https://github.com/nowaaak/nd-crosshair/issues/new/choose). Pull Requests werden nicht angenommen, siehe [CONTRIBUTING](CONTRIBUTING.md).
+Fehler gefunden oder eine Idee? Eröffne ein [Issue](https://github.com/nowaaak/crux-crosshair/issues/new/choose). Pull Requests werden nicht angenommen, siehe [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Lizenz
 
