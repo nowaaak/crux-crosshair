@@ -135,7 +135,8 @@ internal sealed class AppController : IDisposable
         if (window is null)
         {
             viewModel.RefreshMonitors();
-            window = new MainWindow(viewModel, theme);
+            window = new MainWindow(viewModel, theme, viewModel.WindowBounds);
+            window.Closing += (_, _) => CaptureWindowBounds();
             window.Closed += OnWindowClosed;
         }
 
@@ -144,10 +145,7 @@ internal sealed class AppController : IDisposable
             window.Show();
         }
 
-        if (window.WindowState == WindowState.Minimized)
-        {
-            window.WindowState = WindowState.Normal;
-        }
+        window.RestoreFromMinimized();
 
         window.Activate();
     }
@@ -155,6 +153,7 @@ internal sealed class AppController : IDisposable
     public void Dispose()
     {
         updateTimer.Stop();
+        CaptureWindowBounds();
         if (saveTimer.IsEnabled)
         {
             Save();
@@ -395,6 +394,19 @@ internal sealed class AppController : IDisposable
             viewModel.ToggleHotkey.IsNone ? string.Empty : viewModel.ToggleHotkeyText,
             viewModel.Presets.Select(item => item.Name).ToList(),
             viewModel.SelectedPresetIndex);
+
+    private void CaptureWindowBounds()
+    {
+        var bounds = window?.CaptureBounds();
+        if (bounds is null || bounds == viewModel.WindowBounds)
+        {
+            return;
+        }
+
+        viewModel.WindowBounds = bounds;
+        saveTimer.Stop();
+        saveTimer.Start();
+    }
 
     private void Save()
     {

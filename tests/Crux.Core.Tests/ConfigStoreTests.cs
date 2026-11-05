@@ -134,6 +134,7 @@ public sealed class ConfigStoreTests : IDisposable
             CheckForUpdates = false,
             Language = AppLanguage.English,
             Theme = AppTheme.Light,
+            Window = new WindowBounds(-1600, 120, 1300, 860, Maximized: true),
             NextPresetHotkey = new HotkeyBinding(HotkeyBinding.ModifierAlt, 0x78),
             PreviousPresetHotkey = new HotkeyBinding(0, 0x77),
         };
@@ -212,6 +213,36 @@ public sealed class ConfigStoreTests : IDisposable
 
         Assert.Equal(AppTheme.System, store.Load().Config.Theme);
         Assert.Contains("\"theme\": \"System\"", File.ReadAllText(FilePath), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Load_WithoutWindow_LeavesWindowUnset()
+    {
+        Directory.CreateDirectory(directory);
+        File.WriteAllText(FilePath, "{}");
+
+        Assert.Null(new ConfigStore(FilePath).Load().Config.Window);
+    }
+
+    [Theory]
+    [InlineData(0, 800)]
+    [InlineData(1200, -5)]
+    [InlineData(40000, 800)]
+    public void Normalize_DropsWindowWithInvalidSize(int width, int height)
+    {
+        var config = new AppConfig { Window = new WindowBounds(100, 100, width, height, Maximized: false) }.Normalize();
+
+        Assert.Null(config.Window);
+    }
+
+    [Fact]
+    public void SaveAndLoad_RoundTripsWindow()
+    {
+        var store = new ConfigStore(FilePath);
+        var bounds = new WindowBounds(-1920, 40, 1240, 820, Maximized: false);
+        store.Save(new AppConfig { Window = bounds });
+
+        Assert.Equal(bounds, store.Load().Config.Window);
     }
 
     [Fact]

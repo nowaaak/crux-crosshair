@@ -461,6 +461,7 @@ internal sealed partial class MainViewModel : INotifyPropertyChanged
         CheckForUpdates = checkForUpdates,
         Language = language,
         Theme = theme,
+        Window = WindowBounds,
     }.Normalize();
 
     public void ApplyConfig(AppConfig config)
@@ -520,6 +521,7 @@ internal sealed partial class MainViewModel : INotifyPropertyChanged
         checkForUpdates = config.CheckForUpdates;
         language = config.Language;
         theme = config.Theme;
+        WindowBounds = config.Window;
     }
 
     private void InsertPreset(PresetItem item)

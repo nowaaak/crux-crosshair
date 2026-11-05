@@ -56,6 +56,19 @@ public sealed record HotkeyBinding(int Modifiers, int VirtualKey)
     }
 }
 
+public sealed record WindowBounds(int Left, int Top, int Width, int Height, bool Maximized)
+{
+    public const int MaxExtent = 32767;
+
+    public WindowBounds? Normalize() =>
+        Width is > 0 and <= MaxExtent
+        && Height is > 0 and <= MaxExtent
+        && Left is >= -MaxExtent and <= MaxExtent
+        && Top is >= -MaxExtent and <= MaxExtent
+            ? this
+            : null;
+}
+
 public enum AimButton
 {
     None,
@@ -138,6 +151,9 @@ public sealed record AppConfig
 
     public AppTheme Theme { get; init; } = AppTheme.Dark;
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public WindowBounds? Window { get; init; }
+
     public AppConfig Normalize()
     {
         var presets = new List<Preset>();
@@ -175,6 +191,7 @@ public sealed record AppConfig
             AimHideMode = Enum.IsDefined(AimHideMode) ? AimHideMode : AimHideMode.Hold,
             Language = Enum.IsDefined(Language) ? Language : AppLanguage.System,
             Theme = Enum.IsDefined(Theme) ? Theme : AppTheme.Dark,
+            Window = Window?.Normalize(),
         };
     }
 

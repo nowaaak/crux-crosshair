@@ -26,6 +26,17 @@ internal struct RECT
 }
 
 [StructLayout(LayoutKind.Sequential)]
+internal struct WINDOWPLACEMENT
+{
+    public uint Length;
+    public uint Flags;
+    public uint ShowCmd;
+    public POINT MinPosition;
+    public POINT MaxPosition;
+    public RECT NormalPosition;
+}
+
+[StructLayout(LayoutKind.Sequential)]
 internal unsafe struct MONITORINFOEXW
 {
     public uint CbSize;
@@ -158,6 +169,22 @@ internal static unsafe partial class User32
         nint lprcClip,
         delegate* unmanaged<nint, nint, RECT*, nint, int> lpfnEnum,
         nint dwData);
+
+    public const uint SW_SHOWMINIMIZED = 2;
+    public const uint SW_SHOWMAXIMIZED = 3;
+    public const uint WPF_RESTORETOMAXIMIZED = 0x0002;
+    public const uint MONITOR_DEFAULTTONULL = 0x00000000;
+
+    [LibraryImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool GetWindowPlacement(nint hWnd, WINDOWPLACEMENT* lpwndpl);
+
+    [LibraryImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool SetWindowPlacement(nint hWnd, WINDOWPLACEMENT* lpwndpl);
+
+    [LibraryImport("user32.dll")]
+    public static partial nint MonitorFromRect(RECT* lprc, uint dwFlags);
 
     [LibraryImport("user32.dll", EntryPoint = "GetMonitorInfoW")]
     [return: MarshalAs(UnmanagedType.Bool)]

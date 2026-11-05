@@ -286,6 +286,8 @@ internal sealed partial class MainViewModel
 
     public string ConfigFilePath => AppIdentity.ConfigFilePath;
 
+    public WindowBounds? WindowBounds { get; set; }
+
     public bool IsLegacyInstallPresent { get; } = AppIdentity.IsLegacyInstallPresent;
 
     public string VersionText => Loc.Format(

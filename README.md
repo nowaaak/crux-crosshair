@@ -49,6 +49,7 @@ Crux is a free, open source crosshair overlay for Windows. It draws a fully cust
 
 ### Interface
 - Own design with title bar, sidebar and categories, Geist font and Lucide icons
+- Layout adapts to the window size. Crux remembers size, position and maximized state and falls back to the center of the screen if that monitor is gone.
 - Custom dialogs, color picker, notifications and tray menu
 - Exception: export and import use the standard Windows file dialogs
 

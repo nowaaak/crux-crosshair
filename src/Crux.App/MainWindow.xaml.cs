@@ -7,6 +7,7 @@ using Crux.App.Controls;
 using Crux.App.Localization;
 using Crux.App.Native;
 using Crux.App.Services;
+using Crux.Core;
 
 namespace Crux.App;
 
@@ -17,23 +18,44 @@ internal partial class MainWindow : Window
     private const int DarkBorderColor = 0x00262626;
     private const int LightBorderColor = 0x00DEDEDE;
     private const double MaximizedInset = 7;
+    private const int TitleBarProbeHeight = 32;
 
     private readonly MainViewModel viewModel;
     private readonly ThemeService theme;
+    private readonly WindowBounds? savedBounds;
     private TaskCompletionSource<bool>? dialogResult;
+    private WindowState stateBeforeMinimize = WindowState.Normal;
 
-    public MainWindow(MainViewModel viewModel, ThemeService theme)
+    public MainWindow(MainViewModel viewModel, ThemeService theme, WindowBounds? savedBounds)
     {
         this.viewModel = viewModel;
         this.theme = theme;
+        this.savedBounds = savedBounds;
         DataContext = viewModel;
         InitializeComponent();
+        if (savedBounds is not null && IsTitleBarOnScreen(savedBounds))
+        {
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            if (savedBounds.Maximized)
+            {
+                WindowState = WindowState.Maximized;
+            }
+        }
         Title = AppIdentity.DisplayName;
         Icon = BitmapFrame.Create(AppIdentity.IconUri);
         StateChanged += OnStateChanged;
         PreviewKeyDown += OnWindowPreviewKeyDown;
         theme.Changed += OnThemeChanged;
         Closed += (_, _) => theme.Changed -= OnThemeChanged;
+        ApplyWindowStateChrome();
+    }
+
+    public void RestoreFromMinimized()
+    {
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = stateBeforeMinimize;
+        }
     }
 
     public Task<bool> ConfirmAsync(string title, string message, string confirmText, bool destructive)
@@ -57,6 +79,64 @@ internal partial class MainWindow : Window
         var handle = new WindowInteropHelper(this).Handle;
         Dwmapi.SetInt(handle, DWMWA_WINDOW_CORNER_PREFERENCE, DWMWCP_ROUND);
         ApplyFrameTheme();
+        ApplySavedBounds(handle);
+    }
+
+    public unsafe WindowBounds? CaptureBounds()
+    {
+        var handle = new WindowInteropHelper(this).Handle;
+        if (handle == 0)
+        {
+            return null;
+        }
+
+        var placement = new WINDOWPLACEMENT { Length = (uint)sizeof(WINDOWPLACEMENT) };
+        if (!User32.GetWindowPlacement(handle, &placement))
+        {
+            return null;
+        }
+
+        var normal = placement.NormalPosition;
+        var maximized = placement.ShowCmd == User32.SW_SHOWMAXIMIZED
+            || (placement.ShowCmd == User32.SW_SHOWMINIMIZED && (placement.Flags & User32.WPF_RESTORETOMAXIMIZED) != 0);
+        return new WindowBounds(normal.Left, normal.Top, normal.Right - normal.Left, normal.Bottom - normal.Top, maximized).Normalize();
+    }
+
+    private unsafe void ApplySavedBounds(nint handle)
+    {
+        if (savedBounds is null || WindowStartupLocation != WindowStartupLocation.Manual)
+        {
+            return;
+        }
+
+        var placement = new WINDOWPLACEMENT { Length = (uint)sizeof(WINDOWPLACEMENT) };
+        if (!User32.GetWindowPlacement(handle, &placement))
+        {
+            return;
+        }
+
+        placement.Flags = 0;
+        placement.ShowCmd = (uint)User32.SW_HIDE;
+        placement.NormalPosition = new RECT
+        {
+            Left = savedBounds.Left,
+            Top = savedBounds.Top,
+            Right = savedBounds.Left + savedBounds.Width,
+            Bottom = savedBounds.Top + savedBounds.Height,
+        };
+        User32.SetWindowPlacement(handle, &placement);
+    }
+
+    private static unsafe bool IsTitleBarOnScreen(WindowBounds bounds)
+    {
+        var titleBar = new RECT
+        {
+            Left = bounds.Left,
+            Top = bounds.Top,
+            Right = bounds.Left + bounds.Width,
+            Bottom = bounds.Top + TitleBarProbeHeight,
+        };
+        return User32.MonitorFromRect(&titleBar, User32.MONITOR_DEFAULTTONULL) != 0;
     }
 
     private void OnThemeChanged(object? sender, EventArgs e) => ApplyFrameTheme();
@@ -79,6 +159,16 @@ internal partial class MainWindow : Window
         {
             Hide();
             return;
+        }
+
+        ApplyWindowStateChrome();
+    }
+
+    private void ApplyWindowStateChrome()
+    {
+        if (WindowState != WindowState.Minimized)
+        {
+            stateBeforeMinimize = WindowState;
         }
 
         var maximized = WindowState == WindowState.Maximized;
